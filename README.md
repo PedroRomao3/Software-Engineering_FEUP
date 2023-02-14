@@ -1,9 +1,9 @@
 # 2LEIC06T1
 ## Members
-Armando Jorge Ferreira Martins          - 201603566 
-Artur Candiani dos Santos               - 201900839
-Mariana Bourbon Meireles Dias Nogueira  - 202005204
-Pedro Miguel Martins Romão              - 202108660
+Armando Jorge Ferreira Martins          - 201603566 <br />
+Artur Candiani dos Santos               - 201900839 <br />
+Mariana Bourbon Meireles Dias Nogueira  - 202005204 <br />
+Pedro Miguel Martins Romão              - 202108660 <br />
 
 
 # E-LobBy
