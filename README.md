@@ -22,4 +22,4 @@ E-LobBy is the perfect solution for those lonely nights where you can get along 
  - When the lobby is full all the player recieve a link to a shared discord between them, and the lobby is closed
 
 ## Required API's
-- Student timetable from sigarra
+- Discord API for direct redirection and BOT maintainer for discord server
