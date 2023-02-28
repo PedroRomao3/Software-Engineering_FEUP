@@ -8,7 +8,10 @@ You can find here details about the product (or mini-app or module), from a high
 - Business modeling
      - [Product vision](/docs/ProductVision.md)
      - [Elevator Pitch](/docs/ElevatorPitch.md)
-
+- [Requirements](/docs/requirements.md)
+     - [Use Case Model](/docs/requirements.md#Use-case-model)
+     - [User stories](/docs/requirements.md#User-stories)
+     - [Domain model](/docs/requirements.md#Domain-model)
 ## Members
 Armando Jorge Ferreira Martins          - 201603566 <br />
 Artur Candiani dos Santos               - 201900839 <br />

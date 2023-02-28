@@ -1,6 +1,6 @@
 # Elevator Pitch
 
-It's 10pm, you are about to play that one game before going to bed, just to relax after a long day  :relieved: 
+It's 10pm, you are about to play that one game before going to bed, just to relax after a long day 
 <br />
 You are so ready to play that Solo Q and get 2 trollers on your team, 1 afk and 1 guy that is 10 ranks under yours :unamused:
 <br />
