@@ -20,3 +20,16 @@
 
 # Domain Model
 
+*The following domain model represents all the classes used in the software system.* <br> <br>
+
+![domain_model](/images/class_diagram.png)
+
+**We represent 4 diferent classes in our system:** <br>
+- ***Lobby*** <br>
+    Countains all the necessary values so we can set an elo for the lobby itself (the ranks accept), a *private_key* (null by default) that can be used when set a *is_private* to *true*. We also have a list of all the *languages* accepted and a lobbyID to be used later on.
+- ***Game*** <br>
+    Countains the *name* of the game itself and the *description*
+- ***Rank*** <br>
+    Contains the *name* of the elo itself and the number associated to it so that it can be used on the lobby *min* and *max*
+- ***User*** <br>
+    Contains the *username*, the *password_hash* of the account, *birthday*, *discord_userID* to connect to the discord account later on and *nationality* that can be used on an automatic language filter and in lobby display.
