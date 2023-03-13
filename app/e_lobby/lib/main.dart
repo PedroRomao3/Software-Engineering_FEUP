@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'E_Lobby',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,9 +22,8 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.orange
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        primarySwatch: Colors.orange     ),
+      home: const MyHomePage(title: 'E_lobby'),
     );
   }
 }
@@ -96,20 +95,48 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+              'Welcom to E_lobby',
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: (){
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NewPage()),
+          );
+        },
+        child: const Icon(Icons.arrow_forward),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewPage()),
+              );
+            },
+            icon: Icon(Icons.share),
+            ),
+          ],//chldren
+        ),
+      ),
+    );
+  }
+}
+class NewPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('By:'),
+      ),
+      body: Center(
+        child: Text('GROUP 1\n Pedro Miguel Martins Romão - 202108660 \n Armando Jorge Ferreira Martins - 201603566\n Mariana Bourbon Meireles Dias Nogueira - 202005204\n Artur Candiani dos Santos - 201900839'),
+      ),
     );
   }
 }
