@@ -18,6 +18,20 @@
 - As a lobby owner, I want to change privacy setting of my lobby so i can turn it from private to public or vice-versa.
 - As a lobby owner, I want to delete my lobby so I can search or create another one.
 
+# MockUps
+
+To have a better notion of the app to be developed, and how to response to the User Stories defined, we produced some MockUps so we have a better "guide" to be followed latelly.
+
+![begin_page](/images/MockUps/1.png)
+![login_page](/images/MockUps/2.png)
+![signup_page](/images/MockUps/3.png)
+![main_page](/images/MockUps/4.png)
+![findlobby_page](/images/MockUps/5.png)
+![lobby_page](/images/MockUps/6.png)
+![profile_page](/images/MockUps/7.png)
+
+
+
 # Domain Model
 
 *The following domain model represents all the classes used in the software system.* <br> <br>
@@ -26,7 +40,7 @@
 
 **We represent 4 diferent classes in our system:** <br>
 - ***Lobby*** <br>
-    Countains all the necessary values so we can set an elo for the lobby itself (the ranks accept), a *private_key* (null by default) that can be used when set a *is_private* to *true*. We also have a list of all the *languages* accepted and a lobbyID to be used later on.
+    Countains all the necessary values so we can set an elo for the lobby itself (the ranks accept), a *private_key* (null by default) that ca  n be used when set a *is_private* to *true*. We also have a list of all the *languages* accepted and a lobbyID to be used later on.
 - ***Game*** <br>
     Countains the *name* of the game itself and the *description*
 - ***Rank*** <br>
