@@ -7,7 +7,7 @@
 [comment]: <> (perfil settings)
 - As a registered user, I want to block other users so that I don't have to play with them again.
 - As a registered user, I want to define my favorite games / rank / language so that I can create/find a lobby faster.
-- As a registered user, I want to connect my account with discord so that I can be automatically connect to a discord voice chat.
+- As a registered user, I want to connect my account with discord so that I can be automatically connected to a discord voice chat.
 
 [comment]: <> (lobby main page)
 - As a registered user, I want to create a lobby so that I can search people to play.
@@ -20,9 +20,9 @@
 
 # MockUps
 
-To have a better notion of the app to be developed, and how to response to the User Stories defined, we produced some MockUps so we have a better "guide" to be followed latelly.
+To have a better notion of the app to be developed, and how to response to the User Stories defined, we produced some MockUps so we have a better "guide" to be followed later.
 
-![begin_page](/images/MockUps/1.png)
+![begin_page](/images/MockUps/1.png) 
 ![login_page](/images/MockUps/2.png)
 ![signup_page](/images/MockUps/3.png)
 ![main_page](/images/MockUps/4.png)
