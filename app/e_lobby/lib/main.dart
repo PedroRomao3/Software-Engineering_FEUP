@@ -1,10 +1,12 @@
-import 'package:e_lobby/profile_screen.dart';
 import 'package:e_lobby/lobby_page.dart';
+import 'package:e_lobby/Test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -14,8 +16,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
+    return const MaterialApp(
+      home: TestFirebase(),
     );
   }
 }
@@ -67,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
       {required String email,
       required String password,
       required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseAuth auth = FirebaseAuth. instance;
     User? user;
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
@@ -148,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 User? user = await loginUsingEmailPasword(email: _emailCtrl.text, password: _pwCtrl.text, context: context);
                 print(user?.email);
                 if(user != null){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> LobbyPage(user1: CustomUser(id: 0, name: (user.email ?? 'nullemail') ),)));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> LobbyPage(user1: CustomUser(id: 0, name: user.email ?? 'no email'))));
                 }
               },
               child: const Text("Login",
