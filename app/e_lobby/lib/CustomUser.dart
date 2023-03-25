@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CustomUser{
   String id;
   final String name;
-
+//futuro user
   CustomUser({
     this.id = '',
     required this.name,
