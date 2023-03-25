@@ -1,4 +1,5 @@
 import 'package:e_lobby/profile_screen.dart';
+import 'package:e_lobby/lobby_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -145,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(12.0)),
               onPressed: () async {
                 User? user = await loginUsingEmailPasword(email: _emailCtrl.text, password: _pwCtrl.text, context: context);
-                print(user);
+                print(user?.email);
                 if(user != null){
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> ProfileScreen()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=> LobbyPage(user1: CustomUser(id: 0, name: (user.email ?? 'nullemail') ),)));
                 }
               },
               child: const Text("Login",
