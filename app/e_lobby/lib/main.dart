@@ -5,8 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();//garartir binding
+  await Firebase.initializeApp();//ligação ao firebase
   runApp(const MyApp());
 }
 
@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //
 
 
-  //Login Fn
+  //Login Function
   static Future<User?> loginUsingEmailPasword(
       {required String email,
       required String password,
