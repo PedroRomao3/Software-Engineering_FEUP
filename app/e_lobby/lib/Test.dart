@@ -13,7 +13,7 @@ class TestFirebase extends StatefulWidget {
 }
 
 class _TestFirebaseState extends State<TestFirebase> {
-  final CollectionReference _users = FirebaseFirestore.instance.collection("users");
+  final CollectionReference _lobbies = FirebaseFirestore.instance.collection("Lobby");
   /*
   await _users.add({"name": name, "id": id});
   await _users.update({"name": name, "id": id});
@@ -24,8 +24,8 @@ class _TestFirebaseState extends State<TestFirebase> {
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {//atualizar dados
     if (documentSnapshot != null) {
 
-      _nameController.text = documentSnapshot['name'];//grab values
-      _idController.text = documentSnapshot['id'].toString();
+      _nameController.text = documentSnapshot['capacity'].toString();//grab values
+      _idController.text = documentSnapshot['maxElo'].toString();
     }
 
     await showModalBottomSheet(
@@ -44,14 +44,14 @@ class _TestFirebaseState extends State<TestFirebase> {
               children: [
                 TextField(
                   controller: _nameController,//grab value
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Capacity'),
                 ),
                 TextField(
                   keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
                   controller: _idController,//grab value
                   decoration: const InputDecoration(
-                    labelText: 'id',
+                    labelText: 'maxElo',
                   ),
                 ),
                 const SizedBox(
@@ -60,14 +60,14 @@ class _TestFirebaseState extends State<TestFirebase> {
                 ElevatedButton(
                   child: const Text( 'Update'),
                   onPressed: () async {
-                    final String name = _nameController.text;//guardar valores
+                    final double? capacity = double.tryParse(_nameController.text) ;//guardar valores
                     final double? id =
                     double.tryParse(_idController.text);
                     if (id != null) {
 
-                      await _users
+                      await _lobbies
                           .doc(documentSnapshot!.id)
-                          .update({"name": name, "id": id});//passamos valores para metodos built in,update linha
+                          .update({"capacity": capacity, "maxElo": id});//passamos valores para metodos built in,update linha
                       _nameController.text = '';
                       _idController.text = '';
                       Navigator.of(context).pop();
@@ -82,8 +82,8 @@ class _TestFirebaseState extends State<TestFirebase> {
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {//criar dados ou seja nova linha
     if (documentSnapshot != null) {
 
-      _nameController.text = documentSnapshot['name'];//grab values
-      _idController.text = documentSnapshot['id'].toString();
+      _nameController.text = documentSnapshot['capacity'].toString();//grab values
+      _idController.text = documentSnapshot['maxElo'].toString();
     }
 
     await showModalBottomSheet(
@@ -102,14 +102,14 @@ class _TestFirebaseState extends State<TestFirebase> {
               children: [
                 TextField(
                   controller: _nameController,//grab value
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Capacity'),
                 ),
                 TextField(
                   keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
                   controller: _idController,//grab value
                   decoration: const InputDecoration(
-                    labelText: 'id',
+                    labelText: 'maxElo',
                   ),
                 ),
                 const SizedBox(
@@ -118,12 +118,12 @@ class _TestFirebaseState extends State<TestFirebase> {
                 ElevatedButton(
                   child: const Text( 'Update'),
                   onPressed: () async {
-                    final String name = _nameController.text;//guardar valores
-                    final double? id =
+                    final double? capacity = double.tryParse(_nameController.text);//guardar valores
+                    final double? maxElo =
                     double.tryParse(_idController.text);
-                    if (id != null) {
+                    if (capacity != null) {
 
-                      await _users.add({"id": id,"name": name});
+                      await _lobbies.add({"capacity": capacity,"maxElo": maxElo});
                       _nameController.text = '';
                       _idController.text = '';
                       Navigator.of(context).pop();
@@ -136,7 +136,7 @@ class _TestFirebaseState extends State<TestFirebase> {
         });
   }
   Future<void> _delete(String userId) async {//apagar linhas , ou seja utilizadores
-    await _users.doc(userId).delete();
+    await _lobbies.doc(userId).delete();
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a user')));
@@ -150,7 +150,7 @@ class _TestFirebaseState extends State<TestFirebase> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,//botão no meio
       body: StreamBuilder(//função que ajuda a manter uma conxão persistente com a base de dados
-        stream: _users.snapshots(), //build connection com tabela na firebase
+        stream: _lobbies.snapshots(), //build connection com tabela na firebase
         builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot){//snapshot que tem toda a DAta
           if(streamSnapshot.hasData){
             return ListView.builder(
@@ -160,8 +160,8 @@ class _TestFirebaseState extends State<TestFirebase> {
                 return  Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text(documentSnapshot['name']),//aceder ao nome do user e dar display
-                    subtitle: Text(documentSnapshot['id'].toString()),//aceder ao id do user ''
+                    title: Text(documentSnapshot['capacity'].toString()),//aceder ao nome do user e dar display do firebase
+                    subtitle: Text(documentSnapshot['maxElo'].toString()),//aceder ao id do user '' ''
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
