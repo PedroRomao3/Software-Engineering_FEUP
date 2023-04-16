@@ -13,19 +13,19 @@ class TestFirebase extends StatefulWidget {
 }
 
 class _TestFirebaseState extends State<TestFirebase> {
-  final CollectionReference _lobbies = FirebaseFirestore.instance.collection("Lobby");
+  final CollectionReference _lobbies = FirebaseFirestore.instance.collection("users");
   /*
   await _users.add({"name": name, "id": id});
   await _users.update({"name": name, "id": id});
   await _users.doc(productId).delete();
   */
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {//atualizar dados
     if (documentSnapshot != null) {
 
-      _nameController.text = documentSnapshot['capacity'].toString();//grab values
-      _idController.text = documentSnapshot['maxElo'].toString();
+      _emailController.text = documentSnapshot['email'].toString();//grab values
+      _usernameController.text = documentSnapshot['username'].toString();
     }
 
     await showModalBottomSheet(
@@ -43,15 +43,15 @@ class _TestFirebaseState extends State<TestFirebase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _nameController,//grab value
-                  decoration: const InputDecoration(labelText: 'Capacity'),
+                  controller: _emailController,//grab value
+                  decoration: const InputDecoration(labelText: 'email'),
                 ),
                 TextField(
                   keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-                  controller: _idController,//grab value
+                  controller: _usernameController,//grab value
                   decoration: const InputDecoration(
-                    labelText: 'maxElo',
+                    labelText: 'username',
                   ),
                 ),
                 const SizedBox(
@@ -60,16 +60,15 @@ class _TestFirebaseState extends State<TestFirebase> {
                 ElevatedButton(
                   child: const Text( 'Update'),
                   onPressed: () async {
-                    final double? capacity = double.tryParse(_nameController.text) ;//guardar valores
-                    final double? id =
-                    double.tryParse(_idController.text);
-                    if (id != null) {
+                    final String email = _emailController.text ;//guardar valores
+                    final String username = _usernameController.text;
+                    if (username != null) {
 
                       await _lobbies
                           .doc(documentSnapshot!.id)
-                          .update({"capacity": capacity, "maxElo": id});//passamos valores para metodos built in,update linha
-                      _nameController.text = '';
-                      _idController.text = '';
+                          .update({"email": email, "username": username});//passamos valores para metodos built in,update linha
+                      _emailController.text = '';
+                      _usernameController.text = '';
                       Navigator.of(context).pop();
                     }
                   },
@@ -82,8 +81,8 @@ class _TestFirebaseState extends State<TestFirebase> {
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {//criar dados ou seja nova linha
     if (documentSnapshot != null) {
 
-      _nameController.text = documentSnapshot['capacity'].toString();//grab values
-      _idController.text = documentSnapshot['maxElo'].toString();
+      _emailController.text = documentSnapshot['email'].toString();//grab values
+      _usernameController.text = documentSnapshot['username'].toString();
     }
 
     await showModalBottomSheet(
@@ -101,15 +100,15 @@ class _TestFirebaseState extends State<TestFirebase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _nameController,//grab value
-                  decoration: const InputDecoration(labelText: 'Capacity'),
+                  controller: _emailController,//grab value
+                  decoration: const InputDecoration(labelText: 'email'),
                 ),
                 TextField(
                   keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-                  controller: _idController,//grab value
+                  controller: _usernameController,//grab value
                   decoration: const InputDecoration(
-                    labelText: 'maxElo',
+                    labelText: 'username',
                   ),
                 ),
                 const SizedBox(
@@ -118,14 +117,14 @@ class _TestFirebaseState extends State<TestFirebase> {
                 ElevatedButton(
                   child: const Text( 'Update'),
                   onPressed: () async {
-                    final double? capacity = double.tryParse(_nameController.text);//guardar valores
-                    final double? maxElo =
-                    double.tryParse(_idController.text);
-                    if (capacity != null) {
+                    final double? email = double.tryParse(_emailController.text);//guardar valores
+                    final double? username =
+                    double.tryParse(_usernameController.text);
+                    if (email != null) {
 
-                      await _lobbies.add({"capacity": capacity,"maxElo": maxElo});
-                      _nameController.text = '';
-                      _idController.text = '';
+                      await _lobbies.add({"email": email,"username": username});
+                      _emailController.text = '';
+                      _usernameController.text = '';
                       Navigator.of(context).pop();
                     }
                   },
@@ -160,8 +159,8 @@ class _TestFirebaseState extends State<TestFirebase> {
                 return  Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text(documentSnapshot['capacity'].toString()),//aceder ao nome do user e dar display do firebase
-                    subtitle: Text(documentSnapshot['maxElo'].toString()),//aceder ao id do user '' ''
+                    title: Text(documentSnapshot['email'].toString()),//aceder ao nome do user e dar display do firebase
+                    subtitle: Text(documentSnapshot['username'].toString()),//aceder ao id do user '' ''
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
