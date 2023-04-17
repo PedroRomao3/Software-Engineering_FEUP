@@ -57,10 +57,10 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   //
 
   //Login Function
@@ -90,7 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
     TextEditingController _pwCtrl = TextEditingController();
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
+      child: SingleChildScrollView(
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -179,6 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }
