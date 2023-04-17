@@ -13,4 +13,4 @@
 ![I2B4](/images/I2B4.png)
 
 ### After:
-![I2AR](/images/I2TR.png)
+![I2AR](/images/I2AR.png)
