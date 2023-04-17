@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 class CustomUser{
+  DateTime birthday;
+  String discordId;
+  String email;
+  bool isAdmin;
   String id;
-  final String name;
-//futuro user
-  CustomUser({
-    this.id = '',
-    required this.name,
+  final String username;
 
-});
+  CustomUser(this.birthday, this.discordId, this.email, this.isAdmin, this.id,
+      this.username); //futuro user
+
   Map<String,dynamic> toJson() => {
     'id' : id,
-    'name' : name,
+    'name' : username,
   };
-  static CustomUser fromJson(Map<String,dynamic> json) => CustomUser(
-    id: json['id'],
-    name: json['name'],
-  );
+
 }
