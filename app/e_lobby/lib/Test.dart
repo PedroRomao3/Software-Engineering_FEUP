@@ -23,6 +23,7 @@ class _TestFirebaseState extends State<TestFirebase> {
 
       _idController.text = documentSnapshot['lobbyId'].toString();//grab values
       _capacityController.text = documentSnapshot['capacity'].toString();
+      //...
     }
 
     await showModalBottomSheet(

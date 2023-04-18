@@ -10,9 +10,4 @@ class CustomUser{
   CustomUser(this.birthday, this.discordId, this.email, this.isAdmin, this.id,
       this.username); //futuro user
 
-  Map<String,dynamic> toJson() => {
-    'id' : id,
-    'name' : username,
-  };
-
 }
