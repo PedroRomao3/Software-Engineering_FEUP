@@ -38,6 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     } catch (e) {
       print(e);
+      Navigator.pop(context);
     }
   }
 
@@ -97,12 +98,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     _registerUser();
                   }
                 },
-                child: Text('Register'),
+                child: const Text('Register'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 _error,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                 ),
               ),
