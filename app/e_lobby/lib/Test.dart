@@ -1,23 +1,28 @@
-import 'package:e_lobby/lobby_page.dart';
-import 'package:e_lobby/Test.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class TestFirebase extends StatefulWidget {
-  const TestFirebase({Key? key}) : super(key: key);
+import 'CustomUser.dart';
 
+class TestFirebase extends StatefulWidget {
+  CustomUser user = CustomUser.noArgs("");
+  TestFirebase({Key? key, required CustomUser user}) : super(key: key);
   @override
-  State<TestFirebase> createState() => _TestFirebaseState();
+  State<TestFirebase> createState() => _TestFirebaseState(user);
+
+  TestFirebase.userArg(CustomUser user);
 }
 //fill lobby with login user(connected to firebase) when
 class _TestFirebaseState extends State<TestFirebase> {
 
   final CollectionReference _lobbies = FirebaseFirestore.instance.collection("Lobby");
-
+  CustomUser user = CustomUser.noArgs("");
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _capacityController = TextEditingController();
+
+
+  _TestFirebaseState(this.user);
+
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {//atualizar dados
     if (documentSnapshot != null) {
 
@@ -149,22 +154,36 @@ class _TestFirebaseState extends State<TestFirebase> {
         builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot){//snapshot que tem toda a DAta
           if(streamSnapshot.hasData){
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,//docs=linhas na tabela
+              itemCount: streamSnapshot.data!.docs.length,
               itemBuilder: (context,index){
                 final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
                 return  Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text(documentSnapshot['lobbyId'].toString()),//aceder ao nome do user e dar display do firebase
-                    subtitle: Text(documentSnapshot['capacity'].toString()),//aceder ao id do user '' ''
-                    trailing: SizedBox(
-                      width: 100,
-                      child: Row(
-                        children: [
-                          IconButton(onPressed: () => _update(documentSnapshot), icon: Icon(Icons.edit)),//atualizar dados temos de passar a informação da tabela
-                          IconButton(onPressed: () => _delete(documentSnapshot.id), icon: Icon(Icons.delete)),//para apagar só e preciso passar o id do que queremos apagar(automático)
-                        ],
-                      ),
+                    title: Text(documentSnapshot['lobbyId'].toString()),
+                    subtitle: Text(documentSnapshot['capacity'].toString()),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () => _update(documentSnapshot),
+                          icon: const Icon(Icons.edit),
+                        ),
+                        IconButton(
+                          onPressed: () => _delete(documentSnapshot.id),
+                          icon: const Icon(Icons.delete),
+                        ),
+                        TextButton(
+                          child: Text("Join"),
+                          onPressed: () async {
+                            await _lobbies
+                                .doc(documentSnapshot!.id)
+                                .update({
+                                  "users": FieldValue.arrayUnion([user.toMap()])//custom user
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 );

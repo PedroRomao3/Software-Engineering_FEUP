@@ -1,4 +1,3 @@
-import 'package:e_lobby/lobby_page.dart';
 import 'package:e_lobby/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';

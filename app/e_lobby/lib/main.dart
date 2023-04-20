@@ -1,8 +1,8 @@
-import 'package:e_lobby/lobby_page.dart';
 import 'package:e_lobby/Test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:e_lobby/CustomUser.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //garartir binding
@@ -153,29 +153,12 @@ class LoginScreenState extends State<LoginScreen> {
                     context: context);
                 print(user?.email);
                 if (user != null) {
+                  CustomUser user = CustomUser.noArgs("username");
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => LobbyPage(
-                          user1: CustomUser(
-                              id: 0, name: user.email ?? 'no email'))));
+                      builder: (context) => TestFirebase(user: user)));
                 }
               },
               child: const Text("Login",
-                  style: TextStyle(color: Colors.white, fontSize: 18.0)),
-            ),
-          ),
-          Container(
-            width: double.infinity,
-            child: RawMaterialButton(
-              fillColor: const Color(0xFF0069E0),
-              elevation: 0.0,
-              padding: const EdgeInsets.symmetric(vertical: 15.0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0)),
-              onPressed: () async {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => TestFirebase()));
-              },
-              child: const Text("Firebase data ",
                   style: TextStyle(color: Colors.white, fontSize: 18.0)),
             ),
           ),
