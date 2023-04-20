@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:e_lobby/CustomUser.dart';
+import 'package:e_lobby/RegistrationScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //garartir binding
@@ -62,7 +63,23 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   //
-
+  Future<void> createUserWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print('User account created successfully! ${userCredential.user}');
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print('Failed to create user account: $e');
+    }
+  }
   //Login Function
   static Future<User?> loginUsingEmailPasword(
       {required String email,
@@ -159,6 +176,19 @@ class LoginScreenState extends State<LoginScreen> {
                 }
               },
               child: const Text("Login",
+                  style: TextStyle(color: Colors.white, fontSize: 18.0)),
+            ),
+          ),
+          Container(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()),
+                );
+              },
+              child: const Text("Register",
                   style: TextStyle(color: Colors.white, fontSize: 18.0)),
             ),
           ),
