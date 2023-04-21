@@ -6,22 +6,18 @@ import 'CustomUser.dart';
 
 class TestFirebase extends StatefulWidget {
   CustomUser user = CustomUser.noArgs("");
-  TestFirebase({Key? key, required CustomUser user}) : super(key: key);
   @override
-  State<TestFirebase> createState() => _TestFirebaseState(user);
+  State<TestFirebase> createState() => _TestFirebaseState();
 
-  TestFirebase.userArg(CustomUser user);
+  TestFirebase.a(this.user, {super.key});
 }
 //fill lobby with login user(connected to firebase) when
 class _TestFirebaseState extends State<TestFirebase> {
 
   final CollectionReference _lobbies = FirebaseFirestore.instance.collection("Lobby");
-  CustomUser user = CustomUser.noArgs("");
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _capacityController = TextEditingController();
 
-
-  _TestFirebaseState(this.user);
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {//atualizar dados
     if (documentSnapshot != null) {
@@ -179,7 +175,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                             await _lobbies
                                 .doc(documentSnapshot!.id)
                                 .update({
-                                  "users": FieldValue.arrayUnion([user.toMap()])//custom user
+                                  "users": FieldValue.arrayUnion([widget.user.toMap()])//custom user
                             });
                           },
                         ),

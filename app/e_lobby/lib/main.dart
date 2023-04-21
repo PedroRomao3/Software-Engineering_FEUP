@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_lobby/Test.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -172,9 +173,25 @@ class LoginScreenState extends State<LoginScreen> {
                       context: context);
                   print(user?.email);
                   if (user != null) {
-                    CustomUser user = CustomUser.noArgs("username");
+                    final QuerySnapshot snapshot = await FirebaseFirestore.instance
+                        .collection('users')
+                        .where('email', isEqualTo: user.email)
+                        .get();
+
+                    final List<DocumentSnapshot> documents = snapshot.docs;
+                    CustomUser cUser = CustomUser.noArgs("username");
+                    if (documents.isNotEmpty) {
+                      // Retrieve the first document, assuming the email address is unique
+                      final DocumentSnapshot userDoc = documents.first;
+                      // Convert the document data to a custom user object
+                      cUser = CustomUser.fromMap(userDoc.data() as Map<String, dynamic>);
+                      // Do something with the user object
+                    } else {
+                      // No user with the given email address exists in the collection
+                    }
+
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => TestFirebase(user: user)));
+                        builder: (context) => TestFirebase.a(cUser)));
                   }
                 },
                 child: const Text("Login",
