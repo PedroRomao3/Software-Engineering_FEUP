@@ -1,3 +1,4 @@
+import 'package:e_lobby/player_info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,10 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
         password: _password,
       );
       final User user = userCredential.user!;
-      await _firestore.collection('users').doc(user.uid).set({
-        'email': user.email,
-      });
-      Navigator.pop(context); // navigate back to previous screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => PlayerInfoPage( string: user.email!,)),
+      ); // navigate back to previous screen
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         setState(() {
@@ -34,6 +35,10 @@ class _RegisterPageState extends State<RegisterPage> {
       } else if (e.code == 'weak-password') {
         setState(() {
           _error = 'The password provided is too weak.';
+        });
+      } else if (e.code == 'invalid-email') {
+        setState(() {
+          _error = 'The email address is badly formatted';
         });
       }
     } catch (e) {
@@ -94,6 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
+
                   if (_formKey.currentState!.validate()) {
                     _registerUser();
                   }
