@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_lobby/LobbyPage.dart';
 import 'package:flutter/material.dart';
 
 import 'CustomUser.dart';
@@ -170,13 +171,17 @@ class _TestFirebaseState extends State<TestFirebase> {
                           icon: const Icon(Icons.delete),
                         ),
                         TextButton(
-                          child: Text("Join"),
+                          child: const Text("Join"),
                           onPressed: () async {
                             await _lobbies
                                 .doc(documentSnapshot!.id)
                                 .update({
                                   "users": FieldValue.arrayUnion([widget.user.toMap()])//custom user
                             });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => DisplayUsersPage(documentSnapshot!.id,widget.user)),
+                            );
                           },
                         ),
                       ],
