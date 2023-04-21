@@ -10,4 +10,15 @@
 ## Iteration2:
 
 ### Before:
-![I1TR](/images/I2B4.png)
+![I2B4](/images/I2B4.png)
+
+### After:
+![I2AR](/images/I2AR.png)
+
+## Iteration3:
+
+### Before:
+![I2B4](/images/I3B4.png)
+
+### After:
+![I2B4](/images/I3B4.png)
