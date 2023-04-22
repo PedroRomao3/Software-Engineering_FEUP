@@ -1,30 +1,52 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_lobby/LobbyPage.dart';
+import 'package:e_lobby/custom_icons.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'CustomUser.dart';
 
 class TestFirebase extends StatefulWidget {
   CustomUser user = CustomUser.noArgs("");
+
   @override
   State<TestFirebase> createState() => _TestFirebaseState();
 
   TestFirebase.a(this.user, {super.key});
 }
+
 //fill lobby with login user(connected to firebase) when
 class _TestFirebaseState extends State<TestFirebase> {
-
-  final CollectionReference _lobbies = FirebaseFirestore.instance.collection("Lobby");
-  final TextEditingController _idController = TextEditingController();
+  final CollectionReference _lobbies =
+      FirebaseFirestore.instance.collection("Lobby");
   final TextEditingController _capacityController = TextEditingController();
+  final TextEditingController _idController = TextEditingController();
+  final TextEditingController _maxEloController = TextEditingController();
+  final TextEditingController _minEloController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
+  Future<Widget> _getImage(BuildContext context, String imageName) async {
+    Image image = Image.network(
+      "",
+      fit: BoxFit.scaleDown,
+    );
+    await FireStorageService.loadImage(context, imageName).then((value) {
+      image = Image.network(
+        value.toString(),
+        fit: BoxFit.scaleDown,
+      );
+    });
+    return image;
+  }
 
-  Future<void> _update([DocumentSnapshot? documentSnapshot]) async {//atualizar dados
+  Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
+    //atualizar dados
     if (documentSnapshot != null) {
-
-      _idController.text = documentSnapshot['lobbyId'].toString();//grab values
+      _idController.text = documentSnapshot['lobbyId'].toString(); //grab values
       _capacityController.text = documentSnapshot['capacity'].toString();
+      _maxEloController.text = documentSnapshot['maxElo'].toString();
+      _minEloController.text = documentSnapshot['minElo'].toString();
+      _nameController.text = documentSnapshot['name'].toString();
       //...
     }
 
@@ -43,33 +65,51 @@ class _TestFirebaseState extends State<TestFirebase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _idController,//grab value
+                  controller: _idController, //grab value
                   decoration: const InputDecoration(labelText: 'lobbyId'),
                 ),
                 TextField(
-                  controller: _capacityController,//grab value
+                  controller: _capacityController, //grab value
                   decoration: const InputDecoration(
                     labelText: 'capacity',
                   ),
+                ),
+                TextField(
+                  controller: _maxEloController, //grab value
+                  decoration: const InputDecoration(labelText: 'maximum Elo'),
+                ),
+                TextField(
+                  controller: _minEloController, //grab value
+                  decoration: const InputDecoration(labelText: 'minmum Elo'),
+                ),
+                TextField(
+                  controller: _nameController, //grab value
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  child: const Text( 'Update'),
+                  child: const Text('Update'),
                   onPressed: () async {
-                    final String id = _idController.text ;//guardar valores
+                    final String id = _idController.text; //guardar valores
                     final int capacity = int.parse(_capacityController.text);
-                    print(id);
-                    print("//");
-                    print(capacity);
+                    final int minElo = _minEloController.text as int;
+                    final int maxElo = _maxEloController.text as int;
+                    final String name = _nameController.text;
                     if (capacity != null) {
-
-                      await _lobbies
-                          .doc(documentSnapshot!.id)
-                          .update({"lobbyId": id, "capacity": capacity});//passamos valores para metodos built in,update linha
+                      await _lobbies.doc(documentSnapshot!.id).update({
+                        "lobbyId": id,
+                        "capacity": capacity,
+                        "maxElo": maxElo,
+                        "minElo": minElo,
+                        "name": name
+                      }); //passamos valores para metodos built in,update linha
                       _idController.text = '';
                       _capacityController.text = '';
+                      _minEloController.text = '';
+                      _maxEloController.text = '';
+                      _nameController.text = '';
                       Navigator.of(context).pop();
                     }
                   },
@@ -79,10 +119,11 @@ class _TestFirebaseState extends State<TestFirebase> {
           );
         });
   }
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {//criar dados ou seja nova linha
-    if (documentSnapshot != null) {
 
-      _idController.text = documentSnapshot['lobbyId'].toString();//grab values
+  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+    //criar dados ou seja nova linha
+    if (documentSnapshot != null) {
+      _idController.text = documentSnapshot['lobbyId'].toString(); //grab values
       _capacityController.text = documentSnapshot['capacity'].toString();
     }
 
@@ -101,11 +142,11 @@ class _TestFirebaseState extends State<TestFirebase> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  controller: _idController,//grab value
+                  controller: _idController, //grab value
                   decoration: const InputDecoration(labelText: 'id'),
                 ),
                 TextField(
-                  controller: _capacityController,//grab value
+                  controller: _capacityController, //grab value
                   decoration: const InputDecoration(
                     labelText: 'capacity',
                   ),
@@ -114,13 +155,12 @@ class _TestFirebaseState extends State<TestFirebase> {
                   height: 20,
                 ),
                 ElevatedButton(
-                  child: const Text( 'Update'),
+                  child: const Text('Update'),
                   onPressed: () async {
-                    final String id = _idController.text;//guardar valores
-                    final String capacity =  _capacityController.text;
+                    final String id = _idController.text; //guardar valores
+                    final String capacity = _capacityController.text;
                     if (id != null) {
-
-                      await _lobbies.add({"lobbyId": id,"capacity": capacity});
+                      await _lobbies.add({"lobbyId": id, "capacity": capacity});
                       _idController.text = '';
                       _capacityController.text = '';
                       Navigator.of(context).pop();
@@ -132,36 +172,50 @@ class _TestFirebaseState extends State<TestFirebase> {
           );
         });
   }
-  Future<void> _delete(String userId) async {//apagar linhas , ou seja utilizadores
+
+  Future<void> _delete(String userId) async {
+    //apagar linhas , ou seja utilizadores
     await _lobbies.doc(userId).delete();
 
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a user')));
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have successfully deleted a lobby')));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => _create(),
-          child: const Icon(Icons.add),//ao pressionar botão adicionar valores dos controladores á BD
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,//botão no meio
-      body: StreamBuilder(//função que ajuda a manter uma conxão persistente com a base de dados
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _create(),
+        child: const Icon(Icons
+            .add), //ao pressionar botão adicionar valores dos controladores á BD
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      //botão no meio
+      body: StreamBuilder(
+        //função que ajuda a manter uma conxão persistente com a base de dados
         stream: _lobbies.snapshots(), //build connection com tabela na firebase
-        builder: (context,AsyncSnapshot<QuerySnapshot> streamSnapshot){//snapshot que tem toda a DAta
-          if(streamSnapshot.hasData){
+        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          //snapshot que tem toda a DAta
+          if (streamSnapshot.hasData) {
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context,index){
-                final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-                return  Card(
+              itemCount: streamSnapshot.data!.docs.length ,
+              itemBuilder: (context, index) {
+
+                final DocumentSnapshot documentSnapshot =
+                    streamSnapshot.data!.docs[index ];
+                return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text(documentSnapshot['lobbyId'].toString()),
-                    subtitle: Text(documentSnapshot['capacity'].toString()),
+                    subtitle: Text("Missing Players: ${documentSnapshot['capacity']}"),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        IconButton(
+                          onPressed: () => _update(documentSnapshot),
+                          icon: const Icon(CustomIcons.icons8_league_of_legends__1_,color: Colors.deepOrange,),
+                        ),
+
                         IconButton(
                           onPressed: () => _update(documentSnapshot),
                           icon: const Icon(Icons.edit),
@@ -173,14 +227,15 @@ class _TestFirebaseState extends State<TestFirebase> {
                         TextButton(
                           child: const Text("Join"),
                           onPressed: () async {
-                            await _lobbies
-                                .doc(documentSnapshot!.id)
-                                .update({
-                                  "users": FieldValue.arrayUnion([widget.user.toMap()])//custom user
+                            await _lobbies.doc(documentSnapshot!.id).update({
+                              "users": FieldValue.arrayUnion(
+                                  [widget.user.toMap()]) //custom user
                             });
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => DisplayUsersPage(documentSnapshot!.id,widget.user)),
+                              MaterialPageRoute(
+                                  builder: (context) => DisplayUsersPage(
+                                      documentSnapshot!.id, widget.user)),
                             );
                           },
                         ),
@@ -197,5 +252,13 @@ class _TestFirebaseState extends State<TestFirebase> {
         },
       ),
     );
+  }
+}
+
+class FireStorageService extends ChangeNotifier {
+  FireStorageService();
+
+  static Future<dynamic> loadImage(BuildContext context, String image) async {
+    return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
 }
