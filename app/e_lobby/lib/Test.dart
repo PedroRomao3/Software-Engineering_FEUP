@@ -14,34 +14,74 @@ class TestFirebase extends StatefulWidget {
 
   TestFirebase.a(this.user, {super.key});
 }
-class MyWidget extends StatefulWidget {
+class IconRow extends StatefulWidget {
   int game = 5;
   final Function(int) onSelectOption;
-  MyWidget({required this.game  , required this.onSelectOption});
+  IconRow({required this.game  , required this.onSelectOption});
 
   @override
-  _MyWidgetState createState() => _MyWidgetState();
+  _IconRowState createState() => _IconRowState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
-  Color selectedColorOption1 = Colors.white;
-  Color selectedColorOption2 = Colors.white;
+class _IconRowState extends State<IconRow> {
+  Color selectedColorOption1 = Colors.black;
+  Color selectedColorOption2 = Colors.black;
+  double size1 = 30;
+  double size2 = 30;
   @override
   void initState() {
 
     super.initState();
     if(widget.game==0){
+      size1 = 60;
+      size2 = 30;
       selectedColorOption1 = Colors.orangeAccent;
-      selectedColorOption2 = Colors.white;
+      selectedColorOption2 = Colors.black;
     }
     else{
-      selectedColorOption1 = Colors.white;
+      size1 = 30;
+      size2 = 60;
+      selectedColorOption1 = Colors.black;
       selectedColorOption2 = Colors.orangeAccent;
     }
   }
   @override
   Widget build(BuildContext context) {
-
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        IconButton(
+          iconSize: size1,
+          icon: const Icon(CustomIcons.icons8_counter_strike),
+          color: selectedColorOption1,
+          onPressed: () {
+            setState(() {
+              size1 = 60;
+              size2 = 30;
+              selectedColorOption1 = Colors.orangeAccent;
+              selectedColorOption2 = Colors.black ; // reset Option 2 to white
+              widget.onSelectOption(0);
+            });
+          },
+        ),
+        IconButton(
+          iconSize: size2,
+          icon: const Icon(CustomIcons.icons8_league_of_legends__1_),
+          color: selectedColorOption2,
+          onPressed: () {
+            setState(() {
+              setState(() {
+                size1 = 30;
+                size2 = 60;
+                selectedColorOption1 = Colors.black ; // reset Option 1 to white
+                selectedColorOption2 = Colors.orangeAccent;
+                widget.onSelectOption(1);
+              });
+            });
+          },
+        ),
+      ],
+    );
     return Container(
       height: 90,
       child: ListView(
@@ -130,15 +170,16 @@ class _TestFirebaseState extends State<TestFirebase> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  IconRow(
+                    game:game,
+                    onSelectOption: handleSelectOption,
+                  ),
                   TextField(
                     controller: _idController, //grab value
                     decoration: const InputDecoration(labelText: 'lobbyId'),
                   ),
 
-                  MyWidget(
-                      game:game,
-                      onSelectOption: handleSelectOption,
-                  ),
+
 
                   TextField(
                     controller: _capacityController, //grab value
@@ -189,53 +230,87 @@ class _TestFirebaseState extends State<TestFirebase> {
   }
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
-    //criar dados ou seja nova linha
-    if (documentSnapshot != null) {
-      _idController.text = documentSnapshot['lobbyId'].toString(); //grab values
-      _capacityController.text = documentSnapshot['capacity'].toString();
-    }
+    //atualizar dados
+    _idController.text = '';
+    _capacityController.text = '';
+    _eloController.text = '';
+    _nameController.text = '';
+    int game=1;
 
+    void handleSelectOption(int game1) {
+      setState(() {
+        game = game1;
+      });
+    }
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: _idController, //grab value
-                  decoration: const InputDecoration(labelText: 'id'),
-                ),
-                TextField(
-                  controller: _capacityController, //grab value
-                  decoration: const InputDecoration(
-                    labelText: 'capacity',
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconRow(
+                    game:game,
+                    onSelectOption: handleSelectOption,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    final String id = _idController.text; //guardar valores
-                    final String capacity = _capacityController.text;
-                    if (id != null) {
-                      await _lobbies.add({"lobbyId": id, "capacity": capacity});
-                      _idController.text = '';
-                      _capacityController.text = '';
-                      Navigator.of(context).pop();
-                    }
-                  },
-                )
-              ],
+                  TextField(
+                    controller: _idController, //grab value
+                    decoration: const InputDecoration(labelText: 'lobbyId'),
+                  ),
+
+
+
+                  TextField(
+                    controller: _capacityController, //grab value
+                    decoration: const InputDecoration(
+                      labelText: 'capacity',
+                    ),
+                  ),
+                  TextField(
+                    controller: _eloController, //grab value
+                    decoration: const InputDecoration(labelText: 'Elo'),
+                  ),
+
+                  TextField(
+                    controller: _nameController, //grab value
+                    decoration: const InputDecoration(labelText: 'Name'),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    child: const Text('Add'),
+                    onPressed: () async {
+                      final String id = _idController.text; //guardar valores
+                      final int capacity = int.parse(_capacityController.text);
+                      final int elo = int.parse(_eloController.text) ;
+                      final String name = _nameController.text;
+                      if (capacity != null) {
+                        await _lobbies.add({
+                          "lobbyId": id,
+                          "capacity": capacity,
+                          "Elo": elo,
+                          "name": name,
+                          "game": game,});
+                        _idController.text = '';
+                        _capacityController.text = '';
+                        _eloController.text = '';
+                        _nameController.text = '';
+                        Navigator.of(context).pop();//passamos valores para metodos built in,update linha
+
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });
@@ -280,10 +355,10 @@ class _TestFirebaseState extends State<TestFirebase> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         documentSnapshot['game'] == 0 ? IconButton(
-                          onPressed: () => _update(documentSnapshot),
+                          onPressed: () => const Text("data"),
                           icon: const Icon(CustomIcons.icons8_counter_strike,color: Colors.deepOrange,),
                         ) : IconButton(
-                          onPressed: () => _update(documentSnapshot),
+                          onPressed: () => const Text("data"),
                           icon: const Icon(CustomIcons.icons8_league_of_legends__1_,color: Colors.deepOrange,),
                         )
                         ,
