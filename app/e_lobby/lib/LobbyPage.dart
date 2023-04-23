@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:e_lobby/CustomUser.dart';
 
-
 class DisplayUsersPage extends StatelessWidget {
   final String lobbyId;
   final CustomUser user;
@@ -24,20 +23,19 @@ class DisplayUsersPage extends StatelessWidget {
         ),
         title: const Text('Lobby Users'),
       ),
-      body: FutureBuilder<DocumentSnapshot>(
-        future: FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).get(),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          if(!snapshot.data!.exists ){
+          if(!snapshot.hasData || !snapshot.data!.exists ){
+            Navigator.pop(context);
             return const Center(child: Text("Don't exist"));
           }
           if ( !(snapshot.data!.data() as Map<String, dynamic>).containsKey('users')) {
             return  Center(child: Text(lobbyId!));
-
           }
-
 
           final users = List<Map<String, dynamic>>.from(snapshot.data!.get('users'));
 
