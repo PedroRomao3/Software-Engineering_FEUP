@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_lobby/LobbyPage.dart';
+import 'package:e_lobby/Display_users.dart';
 import 'package:e_lobby/custom_icons.dart';
+import 'package:e_lobby/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -294,7 +296,15 @@ class _TestFirebaseState extends State<TestFirebase> {
                       final int elo = int.parse(_eloController.text) ;
                       final String name = _nameController.text;
                       if (capacity != null) {
+                        List<Map<String, dynamic>> messages = [
+                          {
+                            'senderName' : "E_lobBy Username",
+                            'text' : "message"
+
+                          },
+                        ];
                         await _lobbies.add({
+                          "messages": messages,
                           "lobbyId": id,
                           "capacity": capacity,
                           "Elo": elo,
@@ -327,12 +337,39 @@ class _TestFirebaseState extends State<TestFirebase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _create(),
-        child: const Icon(Icons
-            .add), //ao pressionar botão adicionar valores dos controladores á BD
+      floatingActionButton: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: FloatingActionButton(
+              heroTag: 'button1',
+              onPressed: ()  async{
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const HomePage()));
+              },
+              child: const Icon(Icons.logout_rounded),
+            ),
+          ),
+          Positioned(
+            bottom: 10,
+            right: 80,
+            child: FloatingActionButton(
+              heroTag: 'button2',
+              onPressed: () => _create(),
+              child: const Icon(Icons.add),
+            ),
+          ),
+
+        ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => _create(),
+      //   child: const Icon(Icons
+      //       .add), //ao pressionar botão adicionar valores dos controladores á BD
+      // ),
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       //botão no meio
       body: StreamBuilder(
         //função que ajuda a manter uma conxão persistente com a base de dados
@@ -381,8 +418,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => DisplayUsersPage(
-                                      documentSnapshot!.id, widget.user)),
+                                  builder: (context) => DisplayUsersPage(documentSnapshot!.id, widget.user)),//DisplayUsersPage(documentSnapshot!.id, widget.user)
                             );
                           },
                         ),

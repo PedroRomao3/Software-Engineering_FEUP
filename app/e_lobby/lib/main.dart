@@ -190,7 +190,7 @@ class LoginScreenState extends State<LoginScreen> {
                       // No user with the given email address exists in the collection
                     }
 
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => TestFirebase.a(cUser)));
                   }
                 },
