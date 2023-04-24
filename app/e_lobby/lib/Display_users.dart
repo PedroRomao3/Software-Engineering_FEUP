@@ -10,55 +10,64 @@ class DisplayUsersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'button1',
-        onPressed: ()  async{
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>ChatRoom(lobbyId, user)));
+    return  WillPopScope(
+        onWillPop: () async {
+          await FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).update({
+            "users": FieldValue.arrayRemove([user.toMap()])
+          });
+          Navigator.pop(context);
+          return true;
         },
-        child: const Icon(Icons.chat),
-      ),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () async {
-            await FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).update({
-              "users": FieldValue.arrayRemove([user.toMap()])
-            });
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Lobby Users'),
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if(!snapshot.hasData || !snapshot.data!.exists ){
-            Navigator.pop(context);
-            return const Center(child: Text("Don't exist"));
-          }
-          if ( !(snapshot.data!.data() as Map<String, dynamic>).containsKey('users')) {
-            return  Center(child: Text(lobbyId!));
-          }
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            heroTag: 'button1',
+            onPressed: ()  async{
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>ChatRoom(lobbyId, user)));
+            },
+            child: const Icon(Icons.chat),
+          ),
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () async {
+                await FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).update({
+                  "users": FieldValue.arrayRemove([user.toMap()])
+                });
+                Navigator.pop(context);
+              },
+            ),
+            title: const Text('Lobby Users'),
+          ),
+          body: StreamBuilder<DocumentSnapshot>(
+            stream: FirebaseFirestore.instance.collection('Lobby').doc(lobbyId).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if(!snapshot.hasData || !snapshot.data!.exists ){
+                Navigator.pop(context);
+                return const Center(child: Text("Don't exist"));
+              }
+              if ( !(snapshot.data!.data() as Map<String, dynamic>).containsKey('users')) {
+                return  Center(child: Text(lobbyId!));
+              }
 
-          final users = List<Map<String, dynamic>>.from(snapshot.data!.get('users'));
+              final users = List<Map<String, dynamic>>.from(snapshot.data!.get('users'));
 
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              CustomUser user = CustomUser.fromMap(users[index]);
-              return ListTile(
-                title: Text(user.username),
-                subtitle: Text(user.email),
+              return ListView.builder(
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  CustomUser user = CustomUser.fromMap(users[index]);
+                  return ListTile(
+                    title: Text(user.username),
+                    subtitle: Text(user.email),
+                  );
+                },
               );
             },
-          );
-        },
-      ),
+          ),
+        ),
     );
   }
 }
