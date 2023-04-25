@@ -97,7 +97,18 @@ class LoginScreenState extends State<LoginScreen> {
       user = userCredential.user;
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found") {
-        print("No User found");
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            const SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text('No User Found. Try Again!')));
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+
+            const SnackBar(
+                duration: Duration(seconds: 2),
+                content: Text('Check Your Credentials And Try Again!')));
       }
     }
     return user;
@@ -108,6 +119,29 @@ class LoginScreenState extends State<LoginScreen> {
     //create the textfilled ctrl
     TextEditingController _emailCtrl = TextEditingController();
     TextEditingController _pwCtrl = TextEditingController();
+    Future<void> forgotPassword(
+        {required String email, required BuildContext context}) async {
+      FirebaseAuth auth = FirebaseAuth.instance;
+      try {
+        await auth.sendPasswordResetEmail(email: email);
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text('Password reset link sent to your email!')));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text('No user found with that email!')));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text('Failed to send password reset email!')));
+        }
+      }
+    }
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
@@ -151,9 +185,43 @@ class LoginScreenState extends State<LoginScreen> {
                 prefixIcon: Icon(Icons.lock, color: Colors.black),
               ),
             ),
-            const Text(
-              "Don't remember my password",
-              style: TextStyle(color: Colors.blue),
+            GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Forgot Password'),
+                        content: TextField(
+                          controller: _emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter your email',
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('CANCEL'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await forgotPassword(
+                                  email: _emailCtrl.text, context: context);
+                              Navigator.pop(context);
+                            },
+                            child: const Text('SEND EMAIL'),
+                          ),
+                        ],
+                      );
+                    });
+              },
+              child: const Text(
+                'Forgot Password?',
+                style: TextStyle(color: Colors.blue),
+              ),
             ),
             const SizedBox(
               height: 88.0,

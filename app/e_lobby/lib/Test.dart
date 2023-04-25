@@ -123,7 +123,6 @@ class _TestFirebaseState extends State<TestFirebase> {
     int game = 1;
     int capacity = 0;
     if (documentSnapshot != null) {
-      _idController.text = documentSnapshot['lobbyId'].toString(); //grab values
       _eloController.text = documentSnapshot['Elo'].toString();
       _nameController.text = documentSnapshot['name'].toString();
       game = documentSnapshot['game'];
@@ -157,10 +156,6 @@ class _TestFirebaseState extends State<TestFirebase> {
                   IconRow(
                     game: game,
                     onSelectOption: handleSelectOption,
-                  ),
-                  TextField(
-                    controller: _idController, //grab value
-                    decoration: const InputDecoration(labelText: 'lobbyId'),
                   ),
                   SizedBox(
                       height: 50,
@@ -216,18 +211,15 @@ class _TestFirebaseState extends State<TestFirebase> {
                   ElevatedButton(
                     child: const Text('Update'),
                     onPressed: () async {
-                      final String id = _idController.text; //guardar valores
                       final int elo = int.parse(_eloController.text);
                       final String name = _nameController.text;
                       if (capacity != null) {
                         await _lobbies.doc(documentSnapshot!.id).update({
-                          "lobbyId": id,
                           "capacity": capacity,
                           "Elo": elo,
                           "name": name,
                           "game": game,
                         });
-                        _idController.text = '';
                         _eloController.text = '';
                         _nameController.text = '';
                         Navigator.of(context)
@@ -244,7 +236,8 @@ class _TestFirebaseState extends State<TestFirebase> {
 
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     //atualizar dados
-    _idController.text = '';
+    QuerySnapshot querySnapshot = await _lobbies.get();
+    int id = querySnapshot.docs.length + 1;
     _eloController.text = '';
     _nameController.text = '';
     int game = 1;
@@ -275,10 +268,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                     game: game,
                     onSelectOption: handleSelectOption,
                   ),
-                  TextField(
-                    controller: _idController, //grab value
-                    decoration: const InputDecoration(labelText: 'lobbyId'),
-                  ),
+
                   SizedBox(
                       height: 50,
                       child: ListView(
@@ -333,7 +323,6 @@ class _TestFirebaseState extends State<TestFirebase> {
                   ElevatedButton(
                     child: const Text('Add'),
                     onPressed: () async {
-                      final String id = _idController.text; //guardar valores
                       final int elo = int.parse(_eloController.text);
                       final String name = _nameController.text;
                       if (capacity != null) {
@@ -426,7 +415,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                 return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
-                    title: Text(documentSnapshot['lobbyId'].toString()),
+                    title: Text(documentSnapshot['name'].toString()),
                     subtitle: Text(
                         "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}"),
                     trailing: Row(
