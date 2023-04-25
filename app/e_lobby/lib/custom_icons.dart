@@ -20,7 +20,7 @@ class CustomIcons {
 
   static const _kFontFam = 'CustomIcons';
   static const String? _kFontPkg = null;
-
   static const IconData icons8_counter_strike = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData icons8_league_of_legends__1_ = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const List<IconData> customIconList= [icons8_counter_strike,icons8_league_of_legends__1_];
 }

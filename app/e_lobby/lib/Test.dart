@@ -16,10 +16,12 @@ class TestFirebase extends StatefulWidget {
 
   TestFirebase.a(this.user, {super.key});
 }
+
 class IconRow extends StatefulWidget {
   int game = 5;
   final Function(int) onSelectOption;
-  IconRow({required this.game  , required this.onSelectOption});
+
+  IconRow({required this.game, required this.onSelectOption});
 
   @override
   _IconRowState createState() => _IconRowState();
@@ -30,23 +32,23 @@ class _IconRowState extends State<IconRow> {
   Color selectedColorOption2 = Colors.black;
   double size1 = 30;
   double size2 = 30;
+
   @override
   void initState() {
-
     super.initState();
-    if(widget.game==0){
+    if (widget.game == 0) {
       size1 = 60;
       size2 = 30;
       selectedColorOption1 = Colors.orangeAccent;
       selectedColorOption2 = Colors.black;
-    }
-    else{
+    } else {
       size1 = 30;
       size2 = 60;
       selectedColorOption1 = Colors.black;
       selectedColorOption2 = Colors.orangeAccent;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -61,7 +63,7 @@ class _IconRowState extends State<IconRow> {
               size1 = 60;
               size2 = 30;
               selectedColorOption1 = Colors.orangeAccent;
-              selectedColorOption2 = Colors.black ; // reset Option 2 to white
+              selectedColorOption2 = Colors.black; // reset Option 2 to white
               widget.onSelectOption(0);
             });
           },
@@ -75,7 +77,7 @@ class _IconRowState extends State<IconRow> {
               setState(() {
                 size1 = 30;
                 size2 = 60;
-                selectedColorOption1 = Colors.black ; // reset Option 1 to white
+                selectedColorOption1 = Colors.black; // reset Option 1 to white
                 selectedColorOption2 = Colors.orangeAccent;
                 widget.onSelectOption(1);
               });
@@ -83,35 +85,6 @@ class _IconRowState extends State<IconRow> {
           },
         ),
       ],
-    );
-    return Container(
-      height: 90,
-      child: ListView(
-        children: [
-          ListTile(
-            title: Text('CS'),
-            tileColor: selectedColorOption1,
-            onTap: () {
-              setState(() {
-                selectedColorOption1 = Colors.orangeAccent;
-                selectedColorOption2 = Colors.white; // reset Option 2 to white
-                widget.onSelectOption(0);
-              });
-            },
-          ),
-          ListTile(
-            title: Text('LOL'),
-            tileColor: selectedColorOption2,
-            onTap: () {
-              setState(() {
-                selectedColorOption1 = Colors.white; // reset Option 1 to white
-                selectedColorOption2 = Colors.orangeAccent;
-                widget.onSelectOption(1);
-              });
-            },
-          ),
-        ],
-      ),
     );
   }
 }
@@ -141,10 +114,10 @@ class _TestFirebaseState extends State<TestFirebase> {
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     //atualizar dados
-    int game=1;
+    int game = 1;
+    int capacity = 0;
     if (documentSnapshot != null) {
       _idController.text = documentSnapshot['lobbyId'].toString(); //grab values
-      _capacityController.text = documentSnapshot['capacity'].toString();
       _eloController.text = documentSnapshot['Elo'].toString();
       _nameController.text = documentSnapshot['name'].toString();
       game = documentSnapshot['game'];
@@ -157,6 +130,7 @@ class _TestFirebaseState extends State<TestFirebase> {
         game = game1;
       });
     }
+
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -173,27 +147,57 @@ class _TestFirebaseState extends State<TestFirebase> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconRow(
-                    game:game,
+                    game: game,
                     onSelectOption: handleSelectOption,
                   ),
                   TextField(
                     controller: _idController, //grab value
                     decoration: const InputDecoration(labelText: 'lobbyId'),
                   ),
+                  SizedBox(
+                      height: 50,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Text("capacity: "),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 1;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_one)),
 
-
-
-                  TextField(
-                    controller: _capacityController, //grab value
-                    decoration: const InputDecoration(
-                      labelText: 'capacity',
-                    ),
-                  ),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 2;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_two)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 3;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_3)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 4;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_4)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 5;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_5)),
+                          // Add more items as needed
+                        ],
+                      )),
                   TextField(
                     controller: _eloController, //grab value
                     decoration: const InputDecoration(labelText: 'Elo'),
                   ),
-
                   TextField(
                     controller: _nameController, //grab value
                     decoration: const InputDecoration(labelText: 'Name'),
@@ -205,8 +209,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                     child: const Text('Update'),
                     onPressed: () async {
                       final String id = _idController.text; //guardar valores
-                      final int capacity = int.parse(_capacityController.text);
-                      final int elo = int.parse(_eloController.text) ;
+                      final int elo = int.parse(_eloController.text);
                       final String name = _nameController.text;
                       if (capacity != null) {
                         await _lobbies.doc(documentSnapshot!.id).update({
@@ -214,13 +217,13 @@ class _TestFirebaseState extends State<TestFirebase> {
                           "capacity": capacity,
                           "Elo": elo,
                           "name": name,
-                          "game": game,});
+                          "game": game,
+                        });
                         _idController.text = '';
-                        _capacityController.text = '';
                         _eloController.text = '';
                         _nameController.text = '';
-                        Navigator.of(context).pop();//passamos valores para metodos built in,update linha
-
+                        Navigator.of(context)
+                            .pop(); //passamos valores para metodos built in,update linha
                       }
                     },
                   )
@@ -234,16 +237,17 @@ class _TestFirebaseState extends State<TestFirebase> {
   Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
     //atualizar dados
     _idController.text = '';
-    _capacityController.text = '';
     _eloController.text = '';
     _nameController.text = '';
-    int game=1;
+    int game = 1;
+    int capacity = 0;
 
     void handleSelectOption(int game1) {
       setState(() {
         game = game1;
       });
     }
+
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -260,27 +264,57 @@ class _TestFirebaseState extends State<TestFirebase> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconRow(
-                    game:game,
+                    game: game,
                     onSelectOption: handleSelectOption,
                   ),
                   TextField(
                     controller: _idController, //grab value
                     decoration: const InputDecoration(labelText: 'lobbyId'),
                   ),
+                  SizedBox(
+                      height: 50,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Text("capacity: "),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 1;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_one)),
 
-
-
-                  TextField(
-                    controller: _capacityController, //grab value
-                    decoration: const InputDecoration(
-                      labelText: 'capacity',
-                    ),
-                  ),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 2;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_two)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 3;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_3)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 4;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_4)),
+                          IconButton(
+                              onPressed: () {
+                                capacity = 5;
+                                // Action to be performed on tap
+                              },
+                              icon: Icon(Icons.looks_5)),
+                          // Add more items as needed
+                        ],
+                      )),
                   TextField(
                     controller: _eloController, //grab value
                     decoration: const InputDecoration(labelText: 'Elo'),
                   ),
-
                   TextField(
                     controller: _nameController, //grab value
                     decoration: const InputDecoration(labelText: 'Name'),
@@ -292,16 +326,11 @@ class _TestFirebaseState extends State<TestFirebase> {
                     child: const Text('Add'),
                     onPressed: () async {
                       final String id = _idController.text; //guardar valores
-                      final int capacity = int.parse(_capacityController.text);
-                      final int elo = int.parse(_eloController.text) ;
+                      final int elo = int.parse(_eloController.text);
                       final String name = _nameController.text;
                       if (capacity != null) {
                         List<Map<String, dynamic>> messages = [
-                          {
-                            'senderName' : "E_lobBy Username",
-                            'text' : "message"
-
-                          },
+                          {'senderName': "E_lobBy Username", 'text': "message"},
                         ];
                         await _lobbies.add({
                           "messages": messages,
@@ -309,13 +338,18 @@ class _TestFirebaseState extends State<TestFirebase> {
                           "capacity": capacity,
                           "Elo": elo,
                           "name": name,
-                          "game": game,});
+                          "game": game,
+                          "creator": widget.user.toMap(),
+                          "users": FieldValue.arrayUnion(
+                              [widget.user.toMap()]) //custom user
+                        });
                         _idController.text = '';
                         _capacityController.text = '';
                         _eloController.text = '';
                         _nameController.text = '';
-                        Navigator.of(context).pop();//passamos valores para metodos built in,update linha
+                        Navigator.pop(context);
 
+                        //passamos valores para metodos built in,update linha
                       }
                     },
                   )
@@ -344,10 +378,10 @@ class _TestFirebaseState extends State<TestFirebase> {
             right: 10,
             child: FloatingActionButton(
               heroTag: 'button1',
-              onPressed: ()  async{
+              onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const HomePage()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const HomePage()));
               },
               child: const Icon(Icons.logout_rounded),
             ),
@@ -361,7 +395,6 @@ class _TestFirebaseState extends State<TestFirebase> {
               child: const Icon(Icons.add),
             ),
           ),
-
         ],
       ),
       // floatingActionButton: FloatingActionButton(
@@ -378,48 +411,63 @@ class _TestFirebaseState extends State<TestFirebase> {
           //snapshot que tem toda a DAta
           if (streamSnapshot.hasData) {
             return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length ,
+              itemCount: streamSnapshot.data!.docs.length,
               itemBuilder: (context, index) {
-
                 final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index ];
+                    streamSnapshot.data!.docs[index];
                 return Card(
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     title: Text(documentSnapshot['lobbyId'].toString()),
-                    subtitle: Text("Missing Players: ${documentSnapshot['capacity']}"),
+                    subtitle: Text(
+                        "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length}"),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        documentSnapshot['game'] == 0 ? IconButton(
-                          onPressed: () => const Text("data"),
-                          icon: const Icon(CustomIcons.icons8_counter_strike,color: Colors.deepOrange,),
-                        ) : IconButton(
-                          onPressed: () => const Text("data"),
-                          icon: const Icon(CustomIcons.icons8_league_of_legends__1_,color: Colors.deepOrange,),
-                        )
-                        ,
-
                         IconButton(
-                          onPressed: () => _update(documentSnapshot),
-                          icon: const Icon(Icons.edit),
+                          onPressed: () => const Text("data"),
+                          icon: Icon(
+                            CustomIcons
+                                .customIconList[documentSnapshot["game"]],
+                            color: Colors.deepOrange,
+                          ),
                         ),
-                        IconButton(
-                          onPressed: () => _delete(documentSnapshot.id),
-                          icon: const Icon(Icons.delete),
-                        ),
+                        documentSnapshot['creator']['email'] == widget.user.email
+                            ? IconButton(
+                                onPressed: () => _update(documentSnapshot),
+                                icon: const Icon(Icons.edit),
+                              )
+                            : SizedBox.shrink(),
+                        documentSnapshot['creator']['email'] == widget.user.email
+                            ? IconButton(
+                                onPressed: () => _delete(documentSnapshot.id),
+                                icon: const Icon(Icons.delete),
+                              )
+                            : SizedBox.shrink(),
                         TextButton(
                           child: const Text("Join"),
                           onPressed: () async {
-                            await _lobbies.doc(documentSnapshot!.id).update({
-                              "users": FieldValue.arrayUnion(
-                                  [widget.user.toMap()]) //custom user
-                            });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DisplayUsersPage(documentSnapshot!.id, widget.user)),//DisplayUsersPage(documentSnapshot!.id, widget.user)
-                            );
+                            if(documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length > 0){
+                              await _lobbies.doc(documentSnapshot!.id).update({
+                                "users": FieldValue.arrayUnion(
+                                    [widget.user.toMap()]) //custom user
+                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DisplayUsersPage(
+                                        documentSnapshot!.id,
+                                        widget
+                                            .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
+                              );
+                            }
+                            else{
+                              ScaffoldMessenger.of(context).showSnackBar(
+
+                                  const SnackBar(
+                                      duration: Duration(seconds: 1),
+                                      content: Text('Lobby is full')));
+                            }
                           },
                         ),
                       ],
