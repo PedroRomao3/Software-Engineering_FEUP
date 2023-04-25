@@ -18,7 +18,7 @@ class TestFirebase extends StatefulWidget {
 }
 
 class IconRow extends StatefulWidget {
-  int game = 5;
+  int game = 0;
   final Function(int) onSelectOption;
 
   IconRow({required this.game, required this.onSelectOption});
@@ -68,7 +68,6 @@ class _IconRowState extends State<IconRow> {
                 widget.onSelectOption(0);
               });
             });
-
           },
         ),
         IconButton(
@@ -85,11 +84,105 @@ class _IconRowState extends State<IconRow> {
                 widget.onSelectOption(1);
               });
             });
-
-
-
           },
         ),
+      ],
+    );
+  }
+}
+
+class IconRowCapacity extends StatefulWidget {
+  int capacity = 5;
+  final Function(int) onSelectOptionCapacity;
+
+  IconRowCapacity(
+      {required this.capacity, required this.onSelectOptionCapacity});
+
+  @override
+  _IconRowStateCapacity createState() => _IconRowStateCapacity();
+}
+
+class _IconRowStateCapacity extends State<IconRowCapacity> {
+  List<double> sizes = [0, 30, 30, 30, 30, 30];
+
+  @override
+  void initState() {
+    super.initState();
+    sizes = [0, 30, 30, 30, 30, 30];
+    sizes[widget.capacity] = 60;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        SizedBox(
+            height: 50,
+            width: 370,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                IconButton(
+                    iconSize: sizes[1],
+                    onPressed: () {
+                      setState(() {
+                        widget.onSelectOptionCapacity(1);
+                        sizes = [0, 30, 30, 30, 30, 30];
+                        sizes[1] = 60;
+                      });
+
+// Action to be performed on tap
+                    },
+                    icon: Icon(Icons.looks_one)),
+
+                IconButton(
+                    iconSize: sizes[2],
+                    onPressed: () {
+                      setState(() {
+                        widget.onSelectOptionCapacity(2);
+                        sizes = [0, 30, 30, 30, 30, 30];
+                        sizes[2] = 60;
+                      });
+// Action to be performed on tap
+                    },
+                    icon: Icon(Icons.looks_two)),
+                IconButton(
+                    iconSize: sizes[3],
+                    onPressed: () {
+                      setState(() {
+                        widget.onSelectOptionCapacity(3);
+                        sizes = [0, 30, 30, 30, 30, 30];
+                        sizes[3] = 60;
+                      });
+// Action to be performed on tap
+                    },
+                    icon: Icon(Icons.looks_3)),
+                IconButton(
+                    iconSize: sizes[4],
+                    onPressed: () {
+                      setState(() {
+                        widget.onSelectOptionCapacity(4);
+                        sizes = [0, 30, 30, 30, 30, 30];
+                        sizes[4] = 60;
+                      });
+// Action to be performed on tap
+                    },
+                    icon: Icon(Icons.looks_4)),
+                IconButton(
+                    iconSize: sizes[5],
+                    onPressed: () {
+                      setState(() {
+                        widget.onSelectOptionCapacity(5);
+                        sizes = [0, 30, 30, 30, 30, 30];
+                        sizes[5] = 60;
+                      });
+// Action to be performed on tap
+                    },
+                    icon: Icon(Icons.looks_5)),
+// Add more items as needed
+              ],
+            )),
       ],
     );
   }
@@ -99,7 +192,6 @@ class _IconRowState extends State<IconRow> {
 class _TestFirebaseState extends State<TestFirebase> {
   final CollectionReference _lobbies =
       FirebaseFirestore.instance.collection("Lobby");
-  final TextEditingController _capacityController = TextEditingController();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _eloController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -122,6 +214,7 @@ class _TestFirebaseState extends State<TestFirebase> {
     //atualizar dados
     int game = 1;
     int capacity = 0;
+    List<double> sizes = [0, 30, 30, 30, 30, 30];
     if (documentSnapshot != null) {
       _eloController.text = documentSnapshot['Elo'].toString();
       _nameController.text = documentSnapshot['name'].toString();
@@ -134,6 +227,14 @@ class _TestFirebaseState extends State<TestFirebase> {
       Future.delayed(Duration.zero, () {
         setState(() {
           game = game1;
+        });
+      });
+    }
+
+    void handleSelectOptionCapacity(int capacity1) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          capacity = capacity1;
         });
       });
     }
@@ -157,46 +258,10 @@ class _TestFirebaseState extends State<TestFirebase> {
                     game: game,
                     onSelectOption: handleSelectOption,
                   ),
-                  SizedBox(
-                      height: 50,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Text("capacity: "),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 1;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_one)),
-
-                          IconButton(
-                              onPressed: () {
-                                capacity = 2;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_two)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 3;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_3)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 4;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_4)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 5;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_5)),
-                          // Add more items as needed
-                        ],
-                      )),
+                  IconRowCapacity(
+                    capacity: capacity,
+                    onSelectOptionCapacity: handleSelectOptionCapacity,
+                  ),
                   TextField(
                     controller: _eloController, //grab value
                     decoration: const InputDecoration(labelText: 'Elo'),
@@ -211,7 +276,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                   ElevatedButton(
                     child: const Text('Update'),
                     onPressed: () async {
-                      final int elo = int.parse(_eloController.text);
+                      final String elo = _eloController.text;
                       final String name = _nameController.text;
                       if (capacity != null) {
                         await _lobbies.doc(documentSnapshot!.id).update({
@@ -248,6 +313,13 @@ class _TestFirebaseState extends State<TestFirebase> {
         game = game1;
       });
     }
+    void handleSelectOptionCapacity(int capacity1) {
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          capacity = capacity1;
+        });
+      });
+    }
 
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -268,47 +340,9 @@ class _TestFirebaseState extends State<TestFirebase> {
                     game: game,
                     onSelectOption: handleSelectOption,
                   ),
-
-                  SizedBox(
-                      height: 50,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Text("capacity: "),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 1;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_one)),
-
-                          IconButton(
-                              onPressed: () {
-                                capacity = 2;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_two)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 3;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_3)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 4;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_4)),
-                          IconButton(
-                              onPressed: () {
-                                capacity = 5;
-                                // Action to be performed on tap
-                              },
-                              icon: Icon(Icons.looks_5)),
-                          // Add more items as needed
-                        ],
-                      )),
+                  IconRowCapacity(
+                      capacity: capacity,
+                      onSelectOptionCapacity: handleSelectOptionCapacity),
                   TextField(
                     controller: _eloController, //grab value
                     decoration: const InputDecoration(labelText: 'Elo'),
@@ -323,7 +357,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                   ElevatedButton(
                     child: const Text('Add'),
                     onPressed: () async {
-                      final int elo = int.parse(_eloController.text);
+                      final String elo = _eloController.text;
                       final String name = _nameController.text;
                       if (capacity != null) {
                         List<Map<String, dynamic>> messages = [
@@ -337,11 +371,13 @@ class _TestFirebaseState extends State<TestFirebase> {
                           "name": name,
                           "game": game,
                           "creator": widget.user.toMap(),
-                          "users": FieldValue.arrayUnion(
-                              [CustomUser.userEmail("E_LobBy username","user email").toMap()]) //custom user
+                          "users": FieldValue.arrayUnion([
+                            CustomUser.userEmail(
+                                    "E_LobBy username", "user email")
+                                .toMap()
+                          ]) //custom user
                         });
                         _idController.text = '';
-                        _capacityController.text = '';
                         _eloController.text = '';
                         _nameController.text = '';
                         Navigator.pop(context);
@@ -361,13 +397,15 @@ class _TestFirebaseState extends State<TestFirebase> {
     //apagar linhas , ou seja utilizadores
     await _lobbies.doc(userId).delete();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('You have successfully deleted a lobby')));
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('You have successfully deleted a lobby')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF501467),
       floatingActionButton: Stack(
         children: <Widget>[
           Positioned(
@@ -394,13 +432,6 @@ class _TestFirebaseState extends State<TestFirebase> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => _create(),
-      //   child: const Icon(Icons
-      //       .add), //ao pressionar botão adicionar valores dos controladores á BD
-      // ),
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      //botão no meio
       body: StreamBuilder(
         //função que ajuda a manter uma conxão persistente com a base de dados
         stream: _lobbies.snapshots(), //build connection com tabela na firebase
@@ -413,11 +444,25 @@ class _TestFirebaseState extends State<TestFirebase> {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
                 return Card(
-                  margin: const EdgeInsets.all(10),
+                  color: const Color(0xFF9836BE),
+                  margin: const EdgeInsets.all(12),
                   child: ListTile(
                     title: Text(documentSnapshot['name'].toString()),
-                    subtitle: Text(
-                        "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}"),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}"
+                        ),
+                        Text(
+                          documentSnapshot['Elo'],
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -429,13 +474,15 @@ class _TestFirebaseState extends State<TestFirebase> {
                             color: Colors.deepOrange,
                           ),
                         ),
-                        documentSnapshot['creator']['email'] == widget.user.email
+                        documentSnapshot['creator']['email'] ==
+                                widget.user.email
                             ? IconButton(
                                 onPressed: () => _update(documentSnapshot),
                                 icon: const Icon(Icons.edit),
                               )
                             : SizedBox.shrink(),
-                        documentSnapshot['creator']['email'] == widget.user.email
+                        documentSnapshot['creator']['email'] ==
+                                widget.user.email
                             ? IconButton(
                                 onPressed: () => _delete(documentSnapshot.id),
                                 icon: const Icon(Icons.delete),
@@ -444,7 +491,9 @@ class _TestFirebaseState extends State<TestFirebase> {
                         TextButton(
                           child: const Text("Join"),
                           onPressed: () async {
-                            if(documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length > -1){
+                            if (documentSnapshot['capacity'] -
+                                    (documentSnapshot['users'] as List).length >
+                                -1) {
                               await _lobbies.doc(documentSnapshot!.id).update({
                                 "users": FieldValue.arrayUnion(
                                     [widget.user.toMap()]) //custom user
@@ -457,10 +506,8 @@ class _TestFirebaseState extends State<TestFirebase> {
                                         widget
                                             .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
                               );
-                            }
-                            else{
+                            } else {
                               ScaffoldMessenger.of(context).showSnackBar(
-
                                   const SnackBar(
                                       duration: Duration(seconds: 1),
                                       content: Text('Lobby is full')));

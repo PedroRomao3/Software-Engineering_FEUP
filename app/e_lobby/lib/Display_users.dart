@@ -19,6 +19,7 @@ class DisplayUsersPage extends StatelessWidget {
           return true;
         },
         child: Scaffold(
+          backgroundColor: const Color(0xFF9836BE),
           floatingActionButton: FloatingActionButton(
             heroTag: 'button1',
             onPressed: ()  async{
@@ -109,6 +110,7 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF9836BE),
       appBar: AppBar(
         title: Text('Chat Room'),
       ),
