@@ -15,7 +15,9 @@ class CustomUser {
   CustomUser.info(
       this.username, this.birthday, this.discordId, this.language, this.ranks);
 
+
   CustomUser.noArgs(this.username);
+  CustomUser.userEmail(this.username,this.email);
 
   Map<String, dynamic> toMap() {
     return {

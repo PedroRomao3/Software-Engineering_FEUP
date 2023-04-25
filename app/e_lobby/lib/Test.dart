@@ -59,13 +59,16 @@ class _IconRowState extends State<IconRow> {
           icon: const Icon(CustomIcons.icons8_counter_strike),
           color: selectedColorOption1,
           onPressed: () {
-            setState(() {
-              size1 = 60;
-              size2 = 30;
-              selectedColorOption1 = Colors.orangeAccent;
-              selectedColorOption2 = Colors.black; // reset Option 2 to white
-              widget.onSelectOption(0);
+            Future.delayed(Duration.zero, () {
+              setState(() {
+                size1 = 60;
+                size2 = 30;
+                selectedColorOption1 = Colors.orangeAccent;
+                selectedColorOption2 = Colors.black; // reset Option 2 to white
+                widget.onSelectOption(0);
+              });
             });
+
           },
         ),
         IconButton(
@@ -73,7 +76,7 @@ class _IconRowState extends State<IconRow> {
           icon: const Icon(CustomIcons.icons8_league_of_legends__1_),
           color: selectedColorOption2,
           onPressed: () {
-            setState(() {
+            Future.delayed(Duration.zero, () {
               setState(() {
                 size1 = 30;
                 size2 = 60;
@@ -82,6 +85,9 @@ class _IconRowState extends State<IconRow> {
                 widget.onSelectOption(1);
               });
             });
+
+
+
           },
         ),
       ],
@@ -126,8 +132,10 @@ class _TestFirebaseState extends State<TestFirebase> {
     }
 
     void handleSelectOption(int game1) {
-      setState(() {
-        game = game1;
+      Future.delayed(Duration.zero, () {
+        setState(() {
+          game = game1;
+        });
       });
     }
 
@@ -341,7 +349,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                           "game": game,
                           "creator": widget.user.toMap(),
                           "users": FieldValue.arrayUnion(
-                              [widget.user.toMap()]) //custom user
+                              [CustomUser.userEmail("E_LobBy username","user email").toMap()]) //custom user
                         });
                         _idController.text = '';
                         _capacityController.text = '';
@@ -420,7 +428,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                   child: ListTile(
                     title: Text(documentSnapshot['lobbyId'].toString()),
                     subtitle: Text(
-                        "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length}"),
+                        "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}"),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -447,7 +455,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                         TextButton(
                           child: const Text("Join"),
                           onPressed: () async {
-                            if(documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length > 0){
+                            if(documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length > -1){
                               await _lobbies.doc(documentSnapshot!.id).update({
                                 "users": FieldValue.arrayUnion(
                                     [widget.user.toMap()]) //custom user
