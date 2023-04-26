@@ -313,6 +313,7 @@ class _TestFirebaseState extends State<TestFirebase> {
         game = game1;
       });
     }
+
     void handleSelectOptionCapacity(int capacity1) {
       Future.delayed(Duration.zero, () {
         setState(() {
@@ -412,6 +413,7 @@ class _TestFirebaseState extends State<TestFirebase> {
             bottom: 10,
             right: 10,
             child: FloatingActionButton(
+              backgroundColor: const Color(0xFF9836BE),
               heroTag: 'button1',
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
@@ -425,6 +427,7 @@ class _TestFirebaseState extends State<TestFirebase> {
             bottom: 10,
             right: 80,
             child: FloatingActionButton(
+              backgroundColor: const Color(0xFF9836BE),
               heroTag: 'button2',
               onPressed: () => _create(),
               child: const Icon(Icons.add),
@@ -447,18 +450,29 @@ class _TestFirebaseState extends State<TestFirebase> {
                   color: const Color(0xFF9836BE),
                   margin: const EdgeInsets.all(12),
                   child: ListTile(
-                    title: Text(documentSnapshot['name'].toString()),
+                    title: Text(
+                      documentSnapshot['name'].toString(),
+                      style: const TextStyle(
+                        color: Colors.white, // set the text color to red
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}"
+                          "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
+                          style: const TextStyle(
+                            color: Colors.white, // set the text color to red
+                            fontSize: 16.0,
+                          ),
                         ),
                         Text(
                           documentSnapshot['Elo'],
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
                           ),
                         ),
                       ],
@@ -478,16 +492,16 @@ class _TestFirebaseState extends State<TestFirebase> {
                                 widget.user.email
                             ? IconButton(
                                 onPressed: () => _update(documentSnapshot),
-                                icon: const Icon(Icons.edit),
+                                icon: const Icon(Icons.edit,color: Colors.white,),
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         documentSnapshot['creator']['email'] ==
                                 widget.user.email
                             ? IconButton(
                                 onPressed: () => _delete(documentSnapshot.id),
-                                icon: const Icon(Icons.delete),
+                                icon: const Icon(Icons.delete,color: Colors.white,),
                               )
-                            : SizedBox.shrink(),
+                            : const SizedBox.shrink(),
                         TextButton(
                           child: const Text("Join"),
                           onPressed: () async {
