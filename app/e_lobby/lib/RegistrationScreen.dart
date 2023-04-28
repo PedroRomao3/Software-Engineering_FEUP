@@ -23,10 +23,12 @@ class _RegisterPageState extends State<RegisterPage> {
         password: _password,
       );
       final User user = userCredential.user!;
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => PlayerInfoPage( string: user.email!,)),
-      ); // navigate back to previous screen
+      );
+       // navigate back to previous screen
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         setState(() {
@@ -53,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: Text('Register'),
       ),
+      backgroundColor: Color(0xFF501467),
       body: Center(
         child: Form(
           key: _formKey,
