@@ -19,8 +19,43 @@ class RankSelectionDialog extends StatelessWidget {
         //AQUI DEVERIAMOS CRIAR UMA TABLE NA DATABASE COM O NOME E IMG PARA DAR DISPLAY E ESCOLHER DE TODOS
         ListTile(
           leading: const Icon(Icons.grade),
-          title: const Text('Rank 1'),
+          title: const Text('Bronze'),
           onTap: () => Navigator.pop(context, 1),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Silver'),
+          onTap: () => Navigator.pop(context, 2),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Gold'),
+          onTap: () => Navigator.pop(context, 3),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Platinum/MG'),
+          onTap: () => Navigator.pop(context, 4),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Diamond/DMG'),
+          onTap: () => Navigator.pop(context, 5),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Master/LE'),
+          onTap: () => Navigator.pop(context, 6),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('GrandMaster/LEM'),
+          onTap: () => Navigator.pop(context, 7),
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Challenger/Global Elite'),
+          onTap: () => Navigator.pop(context, 8),
         ),
       ],
     );
@@ -85,7 +120,7 @@ class _PlayerInfoPageState extends State<PlayerInfoPage> {
         appBar: AppBar(
           title: Text('Player Info'),
         ),
-        backgroundColor: Color(0xFF501467),
+        backgroundColor: Colors.white,
         body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(

@@ -136,7 +136,7 @@ class LoginScreenState extends State<LoginScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFF501467),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child:  SingleChildScrollView(
@@ -147,7 +147,7 @@ class LoginScreenState extends State<LoginScreen> {
               const Text(
                 "Login to E_LobBy ",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color(0xFF7EA5C5),
                   fontSize: 44.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -160,10 +160,10 @@ class LoginScreenState extends State<LoginScreen> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                   hintText: "User Email",
-                  prefixIcon: Icon(Icons.mail, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
+                  prefixIcon: Icon(Icons.mail, color: Color(0xFF7EA5C5)),
+                  hintStyle: TextStyle(color: Color(0xFF7EA5C5)),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Color(0xFF7EA5C5)),
               ),
               const SizedBox(
                 height: 26.0,
@@ -173,10 +173,10 @@ class LoginScreenState extends State<LoginScreen> {
                 obscureText: true,
                 decoration: const InputDecoration(
                   hintText: "User Password",
-                  prefixIcon: Icon(Icons.lock, color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
+                  prefixIcon: Icon(Icons.lock, color: Color(0xFF7EA5C5)),
+                  hintStyle: TextStyle(color: Color(0xFF7EA5C5)),
                 ),
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Color(0xFF7EA5C5)),
               ),
               GestureDetector(
                 onTap: () {
@@ -213,7 +213,7 @@ class LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Text(
                   'Forgot Password?',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Color(0xFF7EA5C5)),
                 ),
               ),
               const SizedBox(
@@ -222,7 +222,7 @@ class LoginScreenState extends State<LoginScreen> {
               Container(
                 width: double.infinity,
                 child: RawMaterialButton(
-                  fillColor: const Color(0xFF9836BE),
+                  fillColor: Color(0xFF7EA5C5),
                   elevation: 0.0,
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   shape: RoundedRectangleBorder(
@@ -267,7 +267,7 @@ class LoginScreenState extends State<LoginScreen> {
               Container(
                 width: double.infinity,
                 child: RawMaterialButton(
-                  fillColor: const Color(0xFF9836BE),
+                  fillColor: Color(0xFF7EA5C5),
                   elevation: 0.0,
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   shape: RoundedRectangleBorder(

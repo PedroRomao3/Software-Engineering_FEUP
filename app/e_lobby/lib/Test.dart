@@ -442,8 +442,8 @@ class _TestFirebaseState extends State<TestFirebase> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              const Color(0xFF28004F), // Start color
-              const Color(0xFF7EA5C5), // End color with transparency
+              const Color(0xFFFFFFFF), // Start color
+              const Color(0xFFFFFFFF), // End color with transparency
             ],
           ),
         ),
@@ -465,7 +465,7 @@ class _TestFirebaseState extends State<TestFirebase> {
                       title: Text(
                         documentSnapshot['name'].toString(),
                         style: const TextStyle(
-                          color: Color(0xFF28004F), // set the text color to red
+                          color: Color(0xFFFFFFFF), // set the text color to red
                           fontSize: 22.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -476,14 +476,14 @@ class _TestFirebaseState extends State<TestFirebase> {
                           Text(
                             "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
                             style: const TextStyle(
-                              color: Color(0xFF28004F), // set the text color to red
+                              color: Color(0xFFFFFFFF), // set the text color to red
                               fontSize: 16.0,
                             ),
                           ),
                           Text(
                             documentSnapshot['Elo'],
                             style: const TextStyle(
-                              color: Color(0xFF28004F),
+                              color: Color(0xFFFFFFFF),
                               fontSize: 17,
                             ),
                           ),
@@ -497,28 +497,28 @@ class _TestFirebaseState extends State<TestFirebase> {
                             icon: Icon(
                               CustomIcons
                                   .customIconList[documentSnapshot["game"]],
-                              color: Color(0xFF28004F),
+                              color: Color(0xFFFFFFFF),
                             ),
                           ),
                           documentSnapshot['creator']['email'] ==
                               widget.user.email
                               ? IconButton(
                             onPressed: () => _update(documentSnapshot),
-                            icon: const Icon(Icons.edit,color: Color(0xFF28004F),),
+                            icon: const Icon(Icons.edit,color: Color(0xFFFFFFFF),),
                           )
                               : const SizedBox.shrink(),
                           documentSnapshot['creator']['email'] ==
                               widget.user.email
                               ? IconButton(
                             onPressed: () => _delete(documentSnapshot.id),
-                            icon: const Icon(Icons.delete,color: Color(0xFF28004F),),
+                            icon: const Icon(Icons.delete,color: Color(0xFFFFFFFF),),
                           )
                               : const SizedBox.shrink(),
                           TextButton(
                             child: const Text(
                               "Join",
                               style: TextStyle(
-                                color: Color(0xFF28004F),
+                                color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17.0,// Set the text color to white
                               ),
