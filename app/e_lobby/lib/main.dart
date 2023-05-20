@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:e_lobby/CustomUser.dart';
 import 'package:e_lobby/RegistrationScreen.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //garartir binding
   await Firebase.initializeApp(); //ligação ao firebase

@@ -13,6 +13,12 @@ void main() {
   });
 
   test('Verify custom icon list', () {
-    expect(CustomIcons.customIconList, containsAll([CustomIcons.icons8_counter_strike, CustomIcons.icons8_league_of_legends__1_]));
+    expect(
+      CustomIcons.customIconList,
+      containsAll([
+        CustomIcons.icons8_counter_strike,
+        CustomIcons.icons8_league_of_legends__1_,
+      ]),
+    );
   });
 }

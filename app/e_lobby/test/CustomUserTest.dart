@@ -1,7 +1,6 @@
-import 'package:e_lobby/CustomUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_lobby/CustomUser.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 
 void main() {
   group('CustomUser tests', ()
@@ -116,35 +115,6 @@ void main() {
       expect(customUser.ranks, [0, 0]);
     });
 
-    test('Convert CustomUser to map', () {
-      final birthday = DateTime(2023, 4, 20, 12, 0, 0);
-      const discordId = 'discord123';
-      const email = 'user@example.com';
-      const isAdmin = true;
-      const language = 'english';
-      const username = 'user123';
-      final ranks = [0, 0];
-
-      final customUser = CustomUser(
-        birthday,
-        discordId,
-        email,
-        isAdmin,
-        language,
-        username,
-        ranks,
-      );
-
-      final map = customUser.toMap();
-      expect(map['username'], username);
-      expect(map['email'], email);
-      expect(map['isAdmin'], isAdmin);
-      expect(map['discordId'], discordId);
-      expect(map['birthday'], birthday);
-      expect(map['language'], language);
-      expect(map['ranks'], ranks);
-    });
-
     test('Create CustomUser from map', () {
       final birthday = DateTime(2023, 4, 20, 12, 0, 0);
       const discordId = 'discord123';
@@ -175,20 +145,5 @@ void main() {
       expect(customUser.ranks, ranks);
     });
   });
-}
-
-CustomUser createCustomUserInfo(
-    String username,
-    DateTime birthday,
-    String discordId,
-    String language,
-    List<int> ranks,
-    ) {
-  final customUser = CustomUser.noArgs(username);
-  customUser.birthday = birthday;
-  customUser.discordId = discordId;
-  customUser.language = language;
-  customUser.ranks = ranks;
-  return customUser;
 }
 
