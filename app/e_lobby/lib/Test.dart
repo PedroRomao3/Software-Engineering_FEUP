@@ -406,14 +406,14 @@ class _TestFirebaseState extends State<TestFirebase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF501467),
+      backgroundColor: const Color(0xFF28004F),
       floatingActionButton: Stack(
         children: <Widget>[
           Positioned(
             bottom: 10,
             right: 10,
             child: FloatingActionButton(
-              backgroundColor: const Color(0xFF9836BE),
+              backgroundColor: const Color(0xFF7EA5C5),
               heroTag: 'button1',
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
@@ -427,7 +427,7 @@ class _TestFirebaseState extends State<TestFirebase> {
             bottom: 10,
             right: 80,
             child: FloatingActionButton(
-              backgroundColor: const Color(0xFF9836BE),
+              backgroundColor: const Color(0xFF7EA5C5),
               heroTag: 'button2',
               onPressed: () => _create(),
               child: const Icon(Icons.add),
@@ -435,111 +435,132 @@ class _TestFirebaseState extends State<TestFirebase> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        //função que ajuda a manter uma conxão persistente com a base de dados
-        stream: _lobbies.snapshots(), //build connection com tabela na firebase
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          //snapshot que tem toda a DAta
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  color: const Color(0xFF9836BE),
-                  margin: const EdgeInsets.all(12),
-                  child: ListTile(
-                    title: Text(
-                      documentSnapshot['name'].toString(),
-                      style: const TextStyle(
-                        color: Colors.white, // set the text color to red
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold,
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              const Color(0xFF28004F), // Start color
+              const Color(0xFF7EA5C5), // End color with transparency
+            ],
+          ),
+        ),
+        child: StreamBuilder(
+          //função que ajuda a manter uma conxão persistente com a base de dados
+          stream: _lobbies.snapshots(), //build connection com tabela na firebase
+          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            //snapshot que tem toda a DAta
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                  streamSnapshot.data!.docs[index];
+                  return Card(
+                    color: const Color(0xFF7EA5C5),
+                    margin: const EdgeInsets.all(12),
+                    child: ListTile(
+                      title: Text(
+                        documentSnapshot['name'].toString(),
+                        style: const TextStyle(
+                          color: Color(0xFF28004F), // set the text color to red
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
+                            style: const TextStyle(
+                              color: Color(0xFF28004F), // set the text color to red
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          Text(
+                            documentSnapshot['Elo'],
+                            style: const TextStyle(
+                              color: Color(0xFF28004F),
+                              fontSize: 17,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => const Text("data"),
+                            icon: Icon(
+                              CustomIcons
+                                  .customIconList[documentSnapshot["game"]],
+                              color: Color(0xFF28004F),
+                            ),
+                          ),
+                          documentSnapshot['creator']['email'] ==
+                              widget.user.email
+                              ? IconButton(
+                            onPressed: () => _update(documentSnapshot),
+                            icon: const Icon(Icons.edit,color: Color(0xFF28004F),),
+                          )
+                              : const SizedBox.shrink(),
+                          documentSnapshot['creator']['email'] ==
+                              widget.user.email
+                              ? IconButton(
+                            onPressed: () => _delete(documentSnapshot.id),
+                            icon: const Icon(Icons.delete,color: Color(0xFF28004F),),
+                          )
+                              : const SizedBox.shrink(),
+                          TextButton(
+                            child: const Text(
+                              "Join",
+                              style: TextStyle(
+                                color: Color(0xFF28004F),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.0,// Set the text color to white
+                              ),
+                            ),
+
+                            onPressed: () async {
+                              if (documentSnapshot['capacity'] -
+                                  (documentSnapshot['users'] as List).length >
+                                  -1) {
+                                await _lobbies.doc(documentSnapshot!.id).update({
+                                  "users": FieldValue.arrayUnion(
+                                      [widget.user.toMap()]) //custom user
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DisplayUsersPage(
+                                          documentSnapshot!.id,
+                                          widget
+                                              .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        duration: Duration(seconds: 1),
+                                        content: Text('Lobby is full')));
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
-                          style: const TextStyle(
-                            color: Colors.white, // set the text color to red
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Text(
-                          documentSnapshot['Elo'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () => const Text("data"),
-                          icon: Icon(
-                            CustomIcons
-                                .customIconList[documentSnapshot["game"]],
-                            color: Colors.deepOrange,
-                          ),
-                        ),
-                        documentSnapshot['creator']['email'] ==
-                                widget.user.email
-                            ? IconButton(
-                                onPressed: () => _update(documentSnapshot),
-                                icon: const Icon(Icons.edit,color: Colors.white,),
-                              )
-                            : const SizedBox.shrink(),
-                        documentSnapshot['creator']['email'] ==
-                                widget.user.email
-                            ? IconButton(
-                                onPressed: () => _delete(documentSnapshot.id),
-                                icon: const Icon(Icons.delete,color: Colors.white,),
-                              )
-                            : const SizedBox.shrink(),
-                        TextButton(
-                          child: const Text("Join"),
-                          onPressed: () async {
-                            if (documentSnapshot['capacity'] -
-                                    (documentSnapshot['users'] as List).length >
-                                -1) {
-                              await _lobbies.doc(documentSnapshot!.id).update({
-                                "users": FieldValue.arrayUnion(
-                                    [widget.user.toMap()]) //custom user
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DisplayUsersPage(
-                                        documentSnapshot!.id,
-                                        widget
-                                            .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      duration: Duration(seconds: 1),
-                                      content: Text('Lobby is full')));
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+          },
+        ),
+      )
     );
   }
 }

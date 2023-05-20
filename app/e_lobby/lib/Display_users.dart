@@ -9,7 +9,7 @@ class DisplayUsersPage extends StatelessWidget {
 
   const DisplayUsersPage(this.lobbyId, this.user);
 
-  
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
