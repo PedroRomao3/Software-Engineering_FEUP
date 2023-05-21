@@ -26,7 +26,7 @@ class DisplayUsersPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xFF7EA5C5),
+          backgroundColor: const Color(0xFF2195F2),
           heroTag: 'button1',
           onPressed: () async {
             Navigator.of(context).push(MaterialPageRoute(
@@ -35,7 +35,7 @@ class DisplayUsersPage extends StatelessWidget {
           child: const Icon(Icons.chat),
         ),
         appBar: AppBar(
-          backgroundColor: Color(0xFF7EA5C5),
+          backgroundColor: Color(0xFF2195F2),
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back,
@@ -87,11 +87,11 @@ class DisplayUsersPage extends StatelessWidget {
                   tileColor: Colors.white,
                   title: Text(
                     user.username,
-                    style: const TextStyle(color: Color(0xFF7EA5C5)),
+                    style: const TextStyle(color: Color(0xFF2195F2)),
                   ),
                   subtitle: Text(
                     user.email,
-                    style: const TextStyle(color: Color(0xFF7EA5C5)),
+                    style: const TextStyle(color: Color(0xFF2195F2)),
                   ),
                 );
               },
@@ -142,7 +142,7 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF7EA5C5),
+        backgroundColor: const Color(0xFF2195F2),
         title: const Text(
           'Chat Room',
           style: TextStyle(
@@ -181,11 +181,11 @@ class _ChatRoomState extends State<ChatRoom> {
                     return ListTile(
                       title: Text(
                         message['senderName'],
-                        style: const TextStyle(color: Color(0xFF7EA5C5)),
+                        style: const TextStyle(color: Color(0xFF2195F2)),
                       ),
                       subtitle: Text(
                         message['text'],
-                        style: const TextStyle(color: Color(0xFF7EA5C5)),
+                        style: const TextStyle(color: Color(0xFF2195F2)),
                       ),
                     );
                   },
@@ -202,13 +202,13 @@ class _ChatRoomState extends State<ChatRoom> {
                         fillColor: Colors.white,
                         hintText: 'Type a message...',
                         hintStyle: TextStyle(
-                          color: Color(0xFF7EA5C5),
+                          color: Color(0xFF2195F2),
                         ),
                         border: InputBorder.none, // remove the underline
                         contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0), // add padding to make the background color visible
                       ),
                       style: const TextStyle(
-                        color: Color(0xFF7EA5C5), // set the text color to white
+                        color: Color(0xFF2195F2), // set the text color to white
                       ),
                       textInputAction: TextInputAction.send,
                       onSubmitted: (_) => _sendMessage(),
@@ -223,7 +223,7 @@ class _ChatRoomState extends State<ChatRoom> {
                     child: IconButton(
                       icon: const Icon(
                         Icons.send,
-                        color: Color(0xFF7EA5C5),
+                        color: Color(0xFF2195F2),
                       ),
                       onPressed: _sendMessage,
                     ),
