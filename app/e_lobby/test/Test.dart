@@ -21,7 +21,7 @@ class _TestFirebaseState extends State<TestFirebase> {
 
   Future<void> loadData() async {
     // Simulating an asynchronous data loading process
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {
       isDataLoaded = true;
     });
@@ -48,7 +48,7 @@ void main() {
     await tester.pumpWidget(TestFirebase(user));
 
     // Wait for data loading to complete
-    await tester.pump(Duration(seconds: 2));
+    await tester.pump(const Duration(seconds: 2));
 
     // Then
     var testFirebaseState = tester.state<_TestFirebaseState>(find.byType(TestFirebase));

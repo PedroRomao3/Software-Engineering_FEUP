@@ -34,8 +34,8 @@ void main() {
   //unit
   test('createUserWithEmailAndPassword should create a user account', () async {
     final loginScreenState = LoginScreenState();
-    final email = 'test@example.com';
-    final password = 'password';
+    const email = 'test@example.com';
+    const password = 'password';
 
     await loginScreenState.createUserWithEmailAndPassword(email, password);
   });
