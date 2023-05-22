@@ -11,7 +11,4 @@ E-LobBy allows you to create or join customized lobbies, so you can get along wi
  - User can create lobby
  - Lobby creators can close the lobby anytime
  - Filter the lobbies, and join the ones that seem good to you
- - When the lobby is full, all the players receive a link to a shared discord between them, and the lobby is closed
-
-## Required API's
-- Discord API for direct redirection and BOT maintainer for discord server
+ - Chat with your future team mates
