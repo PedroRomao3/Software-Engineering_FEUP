@@ -9,6 +9,7 @@ class DisplayUsersPage extends StatelessWidget {
 
   const DisplayUsersPage(this.lobbyId, this.user);
 
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -23,9 +24,9 @@ class DisplayUsersPage extends StatelessWidget {
         return true;
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF501467),
+        backgroundColor: Colors.white,
         floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xFF9836BE),
+          backgroundColor: const Color(0xFF2195F2),
           heroTag: 'button1',
           onPressed: () async {
             Navigator.of(context).push(MaterialPageRoute(
@@ -34,9 +35,12 @@ class DisplayUsersPage extends StatelessWidget {
           child: const Icon(Icons.chat),
         ),
         appBar: AppBar(
-          backgroundColor: const Color(0xFF9836BE),
+          backgroundColor: Color(0xFF2195F2),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white, // Change the color of the icon
+            ),
             onPressed: () async {
               await FirebaseFirestore.instance
                   .collection('Lobby')
@@ -47,7 +51,12 @@ class DisplayUsersPage extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          title: const Text('Lobby Users'),
+          title: const Text(
+            'Lobby Users',
+            style: TextStyle(
+              color: Colors.white, // Change the color of the title
+            ),
+          ),
         ),
         body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
@@ -75,14 +84,14 @@ class DisplayUsersPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 CustomUser user = CustomUser.fromMap(users[index]);
                 return ListTile(
-                  tileColor: const Color(0xFF9836BE),
+                  tileColor: Colors.white,
                   title: Text(
                     user.username,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Color(0xFF2195F2)),
                   ),
                   subtitle: Text(
                     user.email,
-                    style: const TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Color(0xFF2195F2)),
                   ),
                 );
               },
@@ -131,10 +140,14 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF501467),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF9836BE),
-        title: Text('Chat Room'),
+        backgroundColor: const Color(0xFF2195F2),
+        title: const Text(
+          'Chat Room',
+          style: TextStyle(
+              color: Colors.white),
+        ),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -168,11 +181,11 @@ class _ChatRoomState extends State<ChatRoom> {
                     return ListTile(
                       title: Text(
                         message['senderName'],
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Color(0xFF2195F2)),
                       ),
                       subtitle: Text(
                         message['text'],
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Color(0xFF2195F2)),
                       ),
                     );
                   },
@@ -186,16 +199,16 @@ class _ChatRoomState extends State<ChatRoom> {
                       controller: _textController,
                       decoration: const InputDecoration(
                         filled: true,
-                        fillColor: Color(0xFF9836BE),
+                        fillColor: Colors.white,
                         hintText: 'Type a message...',
                         hintStyle: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF2195F2),
                         ),
                         border: InputBorder.none, // remove the underline
                         contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0), // add padding to make the background color visible
                       ),
                       style: const TextStyle(
-                        color: Colors.white, // set the text color to white
+                        color: Color(0xFF2195F2), // set the text color to white
                       ),
                       textInputAction: TextInputAction.send,
                       onSubmitted: (_) => _sendMessage(),
@@ -204,13 +217,13 @@ class _ChatRoomState extends State<ChatRoom> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      color: const Color(0xFF9836BE), // set the background color
+                      color: Colors.white, // set the background color
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: IconButton(
                       icon: const Icon(
                         Icons.send,
-                        color: Colors.white,
+                        color: Color(0xFF2195F2),
                       ),
                       onPressed: _sendMessage,
                     ),

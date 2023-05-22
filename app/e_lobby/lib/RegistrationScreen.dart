@@ -53,9 +53,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Register'),
+        backgroundColor: const Color(0xFF2195F2),
+        title: const Text('Register'),
       ),
-      backgroundColor: Color(0xFF501467),
+      backgroundColor: Colors.white,
       body: Center(
         child: Form(
           key: _formKey,
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter email',
                 ),
                 validator: (value) {
@@ -81,7 +82,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(height: 16),
               TextFormField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Enter password',
                 ),
                 validator: (value) {

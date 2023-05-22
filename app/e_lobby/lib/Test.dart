@@ -39,13 +39,13 @@ class _IconRowState extends State<IconRow> {
     if (widget.game == 0) {
       size1 = 60;
       size2 = 30;
-      selectedColorOption1 = Colors.orangeAccent;
+      selectedColorOption1 = Color(0xFF2195F2);
       selectedColorOption2 = Colors.black;
     } else {
       size1 = 30;
       size2 = 60;
       selectedColorOption1 = Colors.black;
-      selectedColorOption2 = Colors.orangeAccent;
+      selectedColorOption2 = Color(0xFF2195F2);
     }
   }
 
@@ -63,7 +63,7 @@ class _IconRowState extends State<IconRow> {
               setState(() {
                 size1 = 60;
                 size2 = 30;
-                selectedColorOption1 = Colors.orangeAccent;
+                selectedColorOption1 = Color(0xFF2195F2);
                 selectedColorOption2 = Colors.black; // reset Option 2 to white
                 widget.onSelectOption(0);
               });
@@ -80,7 +80,7 @@ class _IconRowState extends State<IconRow> {
                 size1 = 30;
                 size2 = 60;
                 selectedColorOption1 = Colors.black; // reset Option 1 to white
-                selectedColorOption2 = Colors.orangeAccent;
+                selectedColorOption2 = Color(0xFF2195F2);
                 widget.onSelectOption(1);
               });
             });
@@ -103,13 +103,11 @@ class IconRowCapacity extends StatefulWidget {
 }
 
 class _IconRowStateCapacity extends State<IconRowCapacity> {
-  List<double> sizes = [0, 30, 30, 30, 30, 30];
+  List<Color> sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
 
   @override
   void initState() {
     super.initState();
-    sizes = [0, 30, 30, 30, 30, 30];
-    sizes[widget.capacity] = 60;
   }
 
   @override
@@ -124,12 +122,13 @@ class _IconRowStateCapacity extends State<IconRowCapacity> {
               scrollDirection: Axis.horizontal,
               children: [
                 IconButton(
-                    iconSize: sizes[1],
+                  color: sizes[1],
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
                         widget.onSelectOptionCapacity(1);
-                        sizes = [0, 30, 30, 30, 30, 30];
-                        sizes[1] = 60;
+                        sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
+                        sizes[1]= const Color(0xFF2195F2);
                       });
 
 // Action to be performed on tap
@@ -137,45 +136,49 @@ class _IconRowStateCapacity extends State<IconRowCapacity> {
                     icon: Icon(Icons.looks_one)),
 
                 IconButton(
-                    iconSize: sizes[2],
+                    color: sizes[2],
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
                         widget.onSelectOptionCapacity(2);
-                        sizes = [0, 30, 30, 30, 30, 30];
-                        sizes[2] = 60;
+                        sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
+                        sizes[2]= const Color(0xFF2195F2);
                       });
 // Action to be performed on tap
                     },
                     icon: Icon(Icons.looks_two)),
                 IconButton(
-                    iconSize: sizes[3],
+                    color: sizes[3],
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
                         widget.onSelectOptionCapacity(3);
-                        sizes = [0, 30, 30, 30, 30, 30];
-                        sizes[3] = 60;
+                        sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
+                        sizes[3]= const Color(0xFF2195F2);
                       });
 // Action to be performed on tap
                     },
                     icon: Icon(Icons.looks_3)),
                 IconButton(
-                    iconSize: sizes[4],
+                    color: sizes[4],
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
                         widget.onSelectOptionCapacity(4);
-                        sizes = [0, 30, 30, 30, 30, 30];
-                        sizes[4] = 60;
+                        sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
+                        sizes[4]= const Color(0xFF2195F2);
                       });
 // Action to be performed on tap
                     },
                     icon: Icon(Icons.looks_4)),
                 IconButton(
-                    iconSize: sizes[5],
+                    color: sizes[5],
+                    iconSize: 30,
                     onPressed: () {
                       setState(() {
                         widget.onSelectOptionCapacity(5);
-                        sizes = [0, 30, 30, 30, 30, 30];
-                        sizes[5] = 60;
+                        sizes = [Colors.black, Colors.black, Colors.black, Colors.black, Colors.black, Colors.black];
+                        sizes[5]= const Color(0xFF2195F2);
                       });
 // Action to be performed on tap
                     },
@@ -406,14 +409,14 @@ class _TestFirebaseState extends State<TestFirebase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF501467),
+      backgroundColor: const Color(0xFFF6F4F8),
       floatingActionButton: Stack(
         children: <Widget>[
           Positioned(
             bottom: 10,
             right: 10,
             child: FloatingActionButton(
-              backgroundColor: const Color(0xFF9836BE),
+              backgroundColor: const Color(0xFF2195F2),
               heroTag: 'button1',
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
@@ -427,7 +430,7 @@ class _TestFirebaseState extends State<TestFirebase> {
             bottom: 10,
             right: 80,
             child: FloatingActionButton(
-              backgroundColor: const Color(0xFF9836BE),
+              backgroundColor: const Color(0xFF2195F2),
               heroTag: 'button2',
               onPressed: () => _create(),
               child: const Icon(Icons.add),
@@ -435,111 +438,132 @@ class _TestFirebaseState extends State<TestFirebase> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        //função que ajuda a manter uma conxão persistente com a base de dados
-        stream: _lobbies.snapshots(), //build connection com tabela na firebase
-        builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-          //snapshot que tem toda a DAta
-          if (streamSnapshot.hasData) {
-            return ListView.builder(
-              itemCount: streamSnapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                final DocumentSnapshot documentSnapshot =
-                    streamSnapshot.data!.docs[index];
-                return Card(
-                  color: const Color(0xFF9836BE),
-                  margin: const EdgeInsets.all(12),
-                  child: ListTile(
-                    title: Text(
-                      documentSnapshot['name'].toString(),
-                      style: const TextStyle(
-                        color: Colors.white, // set the text color to red
-                        fontSize: 22.0,
-                        fontWeight: FontWeight.bold,
+
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              const Color(0xFFFFFFFF), // Start color
+              const Color(0xFFFFFFFF), // End color with transparency
+            ],
+          ),
+        ),
+        child: StreamBuilder(
+          //função que ajuda a manter uma conxão persistente com a base de dados
+          stream: _lobbies.snapshots(), //build connection com tabela na firebase
+          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+            //snapshot que tem toda a DAta
+            if (streamSnapshot.hasData) {
+              return ListView.builder(
+                itemCount: streamSnapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  final DocumentSnapshot documentSnapshot =
+                  streamSnapshot.data!.docs[index];
+                  return Card(
+                    color: const Color(0xFF2195F2),
+                    margin: const EdgeInsets.all(12),
+                    child: ListTile(
+                      title: Text(
+                        documentSnapshot['name'].toString(),
+                        style: const TextStyle(
+                          color: Color(0xFFFFFFFF), // set the text color to red
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
+                            style: const TextStyle(
+                              color: Color(0xFFFFFFFF), // set the text color to red
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          Text(
+                            documentSnapshot['Elo'],
+                            style: const TextStyle(
+                              color: Color(0xFFFFFFFF),
+                              fontSize: 17,
+                            ),
+                          ),
+                        ],
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            onPressed: () => const Text("data"),
+                            icon: Icon(
+                              CustomIcons
+                                  .customIconList[documentSnapshot["game"]],
+                              color: Color(0xFFFFFFFF),
+                            ),
+                          ),
+                          documentSnapshot['creator']['email'] ==
+                              widget.user.email
+                              ? IconButton(
+                            onPressed: () => _update(documentSnapshot),
+                            icon: const Icon(Icons.edit,color: Color(0xFFFFFFFF),),
+                          )
+                              : const SizedBox.shrink(),
+                          documentSnapshot['creator']['email'] ==
+                              widget.user.email
+                              ? IconButton(
+                            onPressed: () => _delete(documentSnapshot.id),
+                            icon: const Icon(Icons.delete,color: Color(0xFFFFFFFF),),
+                          )
+                              : const SizedBox.shrink(),
+                          TextButton(
+                            child: const Text(
+                              "Join",
+                              style: TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17.0,// Set the text color to white
+                              ),
+                            ),
+
+                            onPressed: () async {
+                              if (documentSnapshot['capacity'] -
+                                  (documentSnapshot['users'] as List).length >
+                                  -1) {
+                                await _lobbies.doc(documentSnapshot!.id).update({
+                                  "users": FieldValue.arrayUnion(
+                                      [widget.user.toMap()]) //custom user
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DisplayUsersPage(
+                                          documentSnapshot!.id,
+                                          widget
+                                              .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        duration: Duration(seconds: 1),
+                                        content: Text('Lobby is full')));
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Missing Players: ${documentSnapshot['capacity'] - (documentSnapshot['users'] as List).length + 1}",
-                          style: const TextStyle(
-                            color: Colors.white, // set the text color to red
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        Text(
-                          documentSnapshot['Elo'],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          onPressed: () => const Text("data"),
-                          icon: Icon(
-                            CustomIcons
-                                .customIconList[documentSnapshot["game"]],
-                            color: Colors.deepOrange,
-                          ),
-                        ),
-                        documentSnapshot['creator']['email'] ==
-                                widget.user.email
-                            ? IconButton(
-                                onPressed: () => _update(documentSnapshot),
-                                icon: const Icon(Icons.edit,color: Colors.white,),
-                              )
-                            : const SizedBox.shrink(),
-                        documentSnapshot['creator']['email'] ==
-                                widget.user.email
-                            ? IconButton(
-                                onPressed: () => _delete(documentSnapshot.id),
-                                icon: const Icon(Icons.delete,color: Colors.white,),
-                              )
-                            : const SizedBox.shrink(),
-                        TextButton(
-                          child: const Text("Join"),
-                          onPressed: () async {
-                            if (documentSnapshot['capacity'] -
-                                    (documentSnapshot['users'] as List).length >
-                                -1) {
-                              await _lobbies.doc(documentSnapshot!.id).update({
-                                "users": FieldValue.arrayUnion(
-                                    [widget.user.toMap()]) //custom user
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DisplayUsersPage(
-                                        documentSnapshot!.id,
-                                        widget
-                                            .user)), //DisplayUsersPage(documentSnapshot!.id, widget.user)
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      duration: Duration(seconds: 1),
-                                      content: Text('Lobby is full')));
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+          },
+        ),
+      )
     );
   }
 }
