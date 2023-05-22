@@ -41,16 +41,12 @@ class _TestFirebaseState extends State<TestFirebase> {
 
 void main() {
   testWidgets('Acceptance Test - TestFirebase', (WidgetTester tester) async {
-    // Given
     var user = CustomUser("Alice");
 
-    // When
     await tester.pumpWidget(TestFirebase(user));
 
-    // Wait for data loading to complete
     await tester.pump(const Duration(seconds: 2));
 
-    // Then
     var testFirebaseState = tester.state<_TestFirebaseState>(find.byType(TestFirebase));
     expect(testFirebaseState.isDataLoaded, isTrue);
   });

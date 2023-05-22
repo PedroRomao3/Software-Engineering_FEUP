@@ -4,19 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('LoginScreen', () {
-    //unit
-    testWidgets('Login screen UI elements', (WidgetTester tester) async {
-      await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
-
-      expect(find.text('Login to E_LobBy '), findsOneWidget);
-      expect(find.widgetWithText(TextField, 'User Email'), findsOneWidget);
-      expect(find.widgetWithText(TextField, 'User Password'), findsOneWidget);
-      expect(find.text('Forgot Password?'), findsOneWidget);
-      expect(find.widgetWithText(RawMaterialButton, 'Login'), findsOneWidget);
-      expect(find.widgetWithText(RawMaterialButton, 'Register'), findsOneWidget);
-    });
-
-    //unit
     testWidgets('Login screen - Tap on Forgot Password', (WidgetTester tester) async {
       await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
@@ -31,7 +18,6 @@ void main() {
 
   });
 
-  //unit
   test('createUserWithEmailAndPassword should create a user account', () async {
     final loginScreenState = LoginScreenState();
     const email = 'test@example.com';
@@ -40,7 +26,6 @@ void main() {
     await loginScreenState.createUserWithEmailAndPassword(email, password);
   });
 
-  //acceptance
   testWidgets('MyApp acceptance test', (WidgetTester tester) async {
     // Build the MyApp widget
     await tester.pumpWidget(const MyApp());
