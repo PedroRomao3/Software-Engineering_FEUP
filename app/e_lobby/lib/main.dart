@@ -157,6 +157,7 @@ class LoginScreenState extends State<LoginScreen> {
                 height: 44.0,
               ),
               TextField(
+                key: const Key("emailfield"),
                 controller: _emailCtrl,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
@@ -170,6 +171,7 @@ class LoginScreenState extends State<LoginScreen> {
                 height: 26.0,
               ),
               TextField(
+                key: const Key("passfield"),
                 controller: _pwCtrl,
                 obscureText: true,
                 decoration: const InputDecoration(
@@ -223,6 +225,7 @@ class LoginScreenState extends State<LoginScreen> {
               Container(
                 width: double.infinity,
                 child: RawMaterialButton(
+                  key: const Key("LoginButton"),
                   fillColor: Color(0xFF2195F2),
                   elevation: 0.0,
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -263,6 +266,7 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(
+
                 height: 5,
               ),
               Container(
