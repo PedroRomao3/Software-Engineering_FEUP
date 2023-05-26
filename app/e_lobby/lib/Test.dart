@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'CustomUser.dart';
 
 class TestFirebase extends StatefulWidget {
+
   CustomUser user = CustomUser.noArgs("");
 
   @override
@@ -408,7 +409,8 @@ class _TestFirebaseState extends State<TestFirebase> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return Scaffold(key: const Key("HomePage"),
       backgroundColor: const Color(0xFFF6F4F8),
       floatingActionButton: Stack(
         children: <Widget>[

@@ -7,7 +7,7 @@ Future<void> main() {
   final config = FlutterTestConfiguration()
     ..features = [Glob(r"test_driver/features/**.feature")]
     ..reporters = [ProgressReporter()]
-    ..stepDefinitions = [CheckGivenWidgets(),ClickLoginButton()]
+    ..stepDefinitions = [CheckGivenWidgets(),FillEmail(),ClickLoginButton(),Checkpage()]
     ..restartAppBetweenScenarios = true
     ..targetAppPath = "test_driver/app.dart";
   return GherkinRunner().execute(config);

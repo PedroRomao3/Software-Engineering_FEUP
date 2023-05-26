@@ -20,6 +20,21 @@ class CheckGivenWidgets
 // TODO: implement pattern
 RegExp get pattern => RegExp(r"I have {string} and {string} and {string}");
 }
+
+class FillEmail extends When2WithWorld<String,String, FlutterWorld> {
+  @override
+  Future<void> executeStep(String input1, String input2) async {
+// TODO: implement executeStep
+
+    final textinput1 = find.byValueKey(input1);
+
+
+    await FlutterDriverUtils.enterText(world.driver, textinput1, input2);
+  }
+  @override
+  RegExp get pattern => RegExp(r"I fill {string} with {string}");
+}
+
 class ClickLoginButton extends Then1WithWorld<String, FlutterWorld> {
   @override
   Future<void> executeStep(String loginbtn) async {
@@ -29,4 +44,19 @@ class ClickLoginButton extends Then1WithWorld<String, FlutterWorld> {
   }
   @override
   RegExp get pattern => RegExp(r"I tap the {string} button");
+}
+
+class Checkpage extends Then1WithWorld<String, FlutterWorld> {
+  @override
+  Future<void> executeStep(String input1) async {
+// TODO: implement executeStep
+
+    final pagefinder = find.byValueKey(input1);
+    bool pageExists = await FlutterDriverUtils.isPresent(world.driver, pagefinder);
+    expect(pageExists, true);
+
+    await FlutterDriverUtils.isPresent(world.driver, pagefinder);
+  }
+  @override
+  RegExp get pattern => RegExp(r"I should have {string} on screen");
 }
