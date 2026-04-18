@@ -5,3 +5,6 @@
 /app/e_lobby/windows/flutter/generated_plugin_registrant.cc
 /app/e_lobby/windows/flutter/generated_plugin_registrant.h
 /app/e_lobby/windows/flutter/generated_plugins.cmake
+# Firebase config files
+/app/e_lobby/google-services.json
+/app/e_lobby/GoogleService-Info.plist
