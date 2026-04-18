@@ -8,3 +8,4 @@
 # Firebase config files
 /app/e_lobby/google-services.json
 /app/e_lobby/GoogleService-Info.plist
+app/e_lobby/android/app/google-services.json
