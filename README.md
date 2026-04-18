@@ -1,21 +1,37 @@
-# 2LEIC06T1
+# E-LobBy: The Gamer's Matchmaking App
 
-# E-LobBy Development Report
-Welcome to the documentation pages of E-LobBy!
+**E-LobBy** is a cross-platform mobile application developed with Flutter, designed to help gamers create or join customized lobbies, replacing boring in-game queues with a tailored community experience.
 
-You can find here details about the product (or mini-app or module), from a high-level vision to low-level implementation decisions, a kind of Software Development Report, organized by discipline (as of Rational Unified Process):
+*This project was developed as part of the **Software Engineering** course at **FEUP** (Faculdade de Engenharia da Universidade do Porto). It encompasses the full Software Development Life Cycle (SDLC), from initial business modeling and requirements engineering to architectural design and implementation.*
 
-- Business modeling
-     - [Product vision](/docs/ProductVision.md)
+## Tech Stack
+* **Frontend:** Flutter & Dart
+* **Backend as a Service:** Firebase (Authentication, Cloud Firestore, Firebase Storage)
+* **Testing:** Mockito, Flutter Gherkin (BDD Integration)
+
+## Main Features
+- Create an account linked to favorite games and ranks.
+- Create custom lobbies specifying: game, language, desired rank range, max players, and privacy settings (password protected).
+- Filter and join available lobbies that match user preferences.
+- Real-time chat functionality with team members.
+
+---
+
+## Software Development Report
+
+As part of the engineering process, the project was organized by disciplines following the Rational Unified Process (RUP). You can explore our design decisions and documentation below:
+
+- **Business Modeling**
+     - [Product Vision](/docs/ProductVision.md)
      - [Elevator Pitch](/docs/ElevatorPitch.md)
-- [Requirements](/docs/requirements.md)
-     - [User stories](/docs/requirements.md#User-stories)
-     - [Domain model](/docs/requirements.md#Domain-model)
-## Members
-Armando Jorge Ferreira Martins          - 201603566 <br />
-Artur Candiani dos Santos               - 201900839 <br />
-Mariana Bourbon Meireles Dias Nogueira  - 202005204 <br />
-Pedro Miguel Martins Romão              - 202108660 <br />
+- **Requirements**
+     - [User Stories](/docs/requirements.md#User-stories)
+     - [Domain Model](/docs/requirements.md#Domain-model)
+- **Architecture and Design**
+     - [Logical and Physical Architecture](/docs/ArchitectureAndDesign.md)
 
-
-
+## Development Team
+This application was developed by:
+* Pedro Miguel Martins Romão - 202108660
+* Armando Jorge Ferreira Martins - 201603566
+* Mariana Bourbon Meireles Dias Nogueira - 202005204
